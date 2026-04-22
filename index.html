@@ -1,0 +1,772 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --uc-bg:#0B0F1A;--uc-surface:#131929;--uc-card:#1A2236;--uc-border:#243050;
+    --uc-teal:#00C9A7;--uc-teal-dim:#00C9A720;--uc-teal-mid:#00C9A740;
+    --uc-blue:#3A8EF6;--uc-blue-dim:#3A8EF615;
+    --uc-orange:#FF7A2F;--uc-orange-dim:#FF7A2F20;
+    --uc-red:#FF4D6A;--uc-red-dim:#FF4D6A20;
+    --uc-yellow:#F5C842;--uc-yellow-dim:#F5C84220;
+    --uc-green:#34D399;--uc-green-dim:#34D39920;
+    --uc-text:#E8EEF8;--uc-muted:#6B7FA3;--uc-hint:#3D506E;
+    --f:'DM Sans',sans-serif;--fm:'DM Mono',monospace;
+  }
+  body{background:var(--uc-bg);color:var(--uc-text);font-family:var(--f);font-size:14px;min-height:100vh}
+
+  /* LAYOUT */
+  .app{display:grid;grid-template-columns:220px 1fr;grid-template-rows:56px 1fr;height:100vh;min-height:600px}
+  .topbar{grid-column:1/-1;background:var(--uc-surface);border-bottom:1px solid var(--uc-border);display:flex;align-items:center;padding:0 20px;gap:16px}
+  .sidebar{background:var(--uc-surface);border-right:1px solid var(--uc-border);padding:16px 0;display:flex;flex-direction:column;overflow-y:auto}
+  .main{overflow-y:auto;padding:24px}
+
+  /* TOPBAR */
+  .logo{display:flex;align-items:center;gap:8px;font-weight:600;font-size:15px;color:var(--uc-teal);letter-spacing:.5px}
+  .logo-dot{width:8px;height:8px;background:var(--uc-teal);border-radius:50%;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+  .topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px}
+  .alert-badge{background:var(--uc-red-dim);border:1px solid var(--uc-red);color:var(--uc-red);border-radius:20px;padding:3px 10px;font-size:12px;font-weight:500;cursor:pointer;animation:blink 2s infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.6}}
+  .time{font-family:var(--fm);font-size:13px;color:var(--uc-muted)}
+  .avatar{width:32px;height:32px;background:var(--uc-teal-dim);border:1px solid var(--uc-teal-mid);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--uc-teal);cursor:pointer}
+
+  /* SIDEBAR NAV */
+  .nav-section{padding:0 12px 8px;font-size:10px;font-weight:600;color:var(--uc-hint);letter-spacing:1.5px;text-transform:uppercase;margin-top:16px}
+  .nav-item{display:flex;align-items:center;gap:10px;padding:9px 16px;margin:1px 8px;border-radius:8px;cursor:pointer;color:var(--uc-muted);font-size:13px;font-weight:400;transition:all .15s;position:relative}
+  .nav-item:hover{background:var(--uc-card);color:var(--uc-text)}
+  .nav-item.active{background:var(--uc-teal-dim);color:var(--uc-teal);font-weight:500}
+  .nav-item.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:60%;background:var(--uc-teal);border-radius:0 2px 2px 0}
+  .nav-icon{font-size:16px;width:20px;text-align:center}
+  .nav-badge{margin-left:auto;background:var(--uc-red);color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;font-weight:600}
+  .nav-badge.yellow{background:var(--uc-yellow);color:#1A1000}
+  .sidebar-bottom{margin-top:auto;padding:16px;border-top:1px solid var(--uc-border)}
+  .op-card{background:var(--uc-card);border:1px solid var(--uc-border);border-radius:10px;padding:10px;display:flex;align-items:center;gap:10px}
+  .op-avatar{width:32px;height:32px;background:#253350;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--uc-blue)}
+  .op-info p{font-size:12px;font-weight:500}
+  .op-info span{font-size:11px;color:var(--uc-muted)}
+  .status-dot{width:8px;height:8px;background:var(--uc-green);border-radius:50%;margin-left:auto}
+
+  /* PAGES */
+  .page{display:none}
+  .page.active{display:block}
+
+  /* SECTION HEADER */
+  .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px}
+  .section-title{font-size:18px;font-weight:600;color:var(--uc-text)}
+  .section-sub{font-size:13px;color:var(--uc-muted);margin-top:2px}
+  .btn{background:var(--uc-teal-dim);border:1px solid var(--uc-teal-mid);color:var(--uc-teal);border-radius:8px;padding:7px 14px;font-size:13px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:6px;font-family:var(--f);transition:all .15s}
+  .btn:hover{background:var(--uc-teal-mid)}
+  .btn-ghost{background:transparent;border:1px solid var(--uc-border);color:var(--uc-muted);border-radius:8px;padding:6px 12px;font-size:12px;cursor:pointer;font-family:var(--f);transition:all .15s}
+  .btn-ghost:hover{border-color:var(--uc-teal);color:var(--uc-teal)}
+
+  /* METRIC CARDS */
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+  .metric{background:var(--uc-card);border:1px solid var(--uc-border);border-radius:12px;padding:16px}
+  .metric-label{font-size:11px;color:var(--uc-muted);font-weight:500;letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px}
+  .metric-value{font-size:26px;font-weight:600;font-family:var(--fm);margin-bottom:4px}
+  .metric-sub{font-size:11px;color:var(--uc-muted)}
+  .metric-sub span{color:var(--uc-green)}
+  .metric.danger .metric-value{color:var(--uc-red)}
+  .metric.warning .metric-value{color:var(--uc-yellow)}
+  .metric.ok .metric-value{color:var(--uc-teal)}
+  .metric.info .metric-value{color:var(--uc-blue)}
+
+  /* GRID 2COL */
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:16px}
+
+  /* CARD */
+  .card{background:var(--uc-card);border:1px solid var(--uc-border);border-radius:12px;padding:16px}
+  .card-title{font-size:13px;font-weight:600;color:var(--uc-text);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .card-title span{font-size:10px;background:var(--uc-teal-dim);color:var(--uc-teal);border:1px solid var(--uc-teal-mid);border-radius:20px;padding:2px 8px;font-weight:500}
+
+  /* PATIENT CARDS */
+  .patient-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+  .patient-card{background:var(--uc-card);border:1px solid var(--uc-border);border-radius:12px;padding:14px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+  .patient-card:hover{border-color:var(--uc-teal-mid);transform:translateY(-2px)}
+  .patient-card.critical{border-color:var(--uc-red);box-shadow:0 0 0 1px var(--uc-red-dim)}
+  .patient-card.critical::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--uc-red)}
+  .patient-card.warning{border-color:var(--uc-yellow)}
+  .patient-card.warning::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--uc-yellow)}
+  .patient-card.ok::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--uc-green)}
+  .pt-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .pt-avatar{width:38px;height:38px;border-radius:50%;background:#1E2D47;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:var(--uc-blue);flex-shrink:0}
+  .pt-name{font-size:13px;font-weight:600}
+  .pt-age{font-size:11px;color:var(--uc-muted)}
+  .pt-status{margin-left:auto;font-size:10px;border-radius:20px;padding:3px 8px;font-weight:600}
+  .pt-status.critical{background:var(--uc-red-dim);color:var(--uc-red);border:1px solid var(--uc-red)}
+  .pt-status.stable{background:var(--uc-green-dim);color:var(--uc-green);border:1px solid var(--uc-green)}
+  .pt-status.attention{background:var(--uc-yellow-dim);color:var(--uc-yellow);border:1px solid var(--uc-yellow)}
+  .pt-vitals{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+  .vital{background:var(--uc-surface);border-radius:8px;padding:6px 8px}
+  .vital-label{font-size:10px;color:var(--uc-muted);margin-bottom:2px}
+  .vital-value{font-size:13px;font-weight:500;font-family:var(--fm)}
+  .vital-value.alert{color:var(--uc-red)}
+  .vital-value.warn{color:var(--uc-yellow)}
+  .pt-last{font-size:11px;color:var(--uc-muted);display:flex;align-items:center;justify-content:space-between}
+
+  /* ALERTS */
+  .alert-list{display:flex;flex-direction:column;gap:8px}
+  .alert-item{background:var(--uc-surface);border-left:3px solid var(--uc-red);border-radius:0 8px 8px 0;padding:10px 12px;display:flex;align-items:flex-start;gap:10px}
+  .alert-item.warn{border-left-color:var(--uc-yellow)}
+  .alert-item.info{border-left-color:var(--uc-blue)}
+  .alert-item.ok{border-left-color:var(--uc-green)}
+  .alert-icon{font-size:16px;margin-top:1px;flex-shrink:0}
+  .alert-body p{font-size:12px;font-weight:500;margin-bottom:2px}
+  .alert-body span{font-size:11px;color:var(--uc-muted)}
+  .alert-time{font-family:var(--fm);font-size:10px;color:var(--uc-hint);margin-left:auto;flex-shrink:0;margin-top:2px}
+
+  /* TIMELINE */
+  .timeline{display:flex;flex-direction:column;gap:0}
+  .tl-item{display:flex;gap:12px;padding-bottom:14px;position:relative}
+  .tl-item:not(:last-child)::before{content:'';position:absolute;left:11px;top:22px;width:1px;bottom:0;background:var(--uc-border)}
+  .tl-dot{width:22px;height:22px;border-radius:50%;background:var(--uc-surface);border:2px solid var(--uc-border);display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;margin-top:1px}
+  .tl-dot.active{border-color:var(--uc-teal);color:var(--uc-teal)}
+  .tl-dot.done{border-color:var(--uc-green);color:var(--uc-green)}
+  .tl-dot.alert{border-color:var(--uc-red);color:var(--uc-red)}
+  .tl-content p{font-size:12px;font-weight:500}
+  .tl-content span{font-size:11px;color:var(--uc-muted)}
+
+  /* VITALS CHART (fake sparkline) */
+  .sparkline{height:40px;display:flex;align-items:flex-end;gap:2px}
+  .spark-bar{background:var(--uc-teal-dim);border-top:1px solid var(--uc-teal);border-radius:2px 2px 0 0;flex:1;transition:height .3s}
+  .spark-bar.alert{background:var(--uc-red-dim);border-top-color:var(--uc-red)}
+
+  /* MED TABLE */
+  .med-table{width:100%;border-collapse:collapse}
+  .med-table th{font-size:11px;color:var(--uc-muted);font-weight:500;padding:6px 8px;text-align:left;border-bottom:1px solid var(--uc-border);letter-spacing:.5px;text-transform:uppercase}
+  .med-table td{padding:8px;font-size:12px;border-bottom:1px solid var(--uc-border)}
+  .med-table tr:last-child td{border-bottom:none}
+  .pill{display:inline-block;border-radius:20px;padding:2px 8px;font-size:10px;font-weight:600}
+  .pill.green{background:var(--uc-green-dim);color:var(--uc-green)}
+  .pill.red{background:var(--uc-red-dim);color:var(--uc-red)}
+  .pill.yellow{background:var(--uc-yellow-dim);color:var(--uc-yellow)}
+  .pill.blue{background:var(--uc-blue-dim);color:var(--uc-blue)}
+
+  /* EMERGENCY PROTOCOL */
+  .protocol-flow{display:flex;flex-direction:column;gap:6px}
+  .pf-step{display:flex;align-items:center;gap:10px;padding:10px;border-radius:8px;background:var(--uc-surface)}
+  .pf-step.human{border-left:3px solid var(--uc-blue)}
+  .pf-step.ai{border-left:3px solid var(--uc-teal)}
+  .pf-step.critical{border-left:3px solid var(--uc-red)}
+  .pf-num{width:22px;height:22px;border-radius:50%;background:var(--uc-card);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:var(--uc-muted);flex-shrink:0;font-family:var(--fm)}
+  .pf-text p{font-size:12px;font-weight:500}
+  .pf-text span{font-size:11px;color:var(--uc-muted)}
+  .pf-tag{margin-left:auto;font-size:10px;border-radius:4px;padding:2px 7px;font-weight:600;flex-shrink:0}
+  .pf-tag.ai-tag{background:var(--uc-teal-dim);color:var(--uc-teal)}
+  .pf-tag.human-tag{background:var(--uc-blue-dim);color:var(--uc-blue)}
+
+  /* URGENT PANEL */
+  .urgent-banner{background:var(--uc-red-dim);border:1px solid var(--uc-red);border-radius:12px;padding:16px;margin-bottom:20px;display:flex;align-items:center;gap:14px;animation:urgentPulse 1.5s infinite}
+  @keyframes urgentPulse{0%,100%{box-shadow:0 0 0 0 var(--uc-red-dim)}50%{box-shadow:0 0 0 6px transparent}}
+  .urgent-icon{font-size:28px}
+  .urgent-info{flex:1}
+  .urgent-info p{font-size:15px;font-weight:600;color:var(--uc-red)}
+  .urgent-info span{font-size:12px;color:var(--uc-muted)}
+  .urgent-actions{display:flex;gap:8px}
+  .btn-urgent{background:var(--uc-red);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--f);transition:all .15s}
+  .btn-urgent:hover{opacity:.9}
+  .btn-confirm{background:var(--uc-green-dim);border:1px solid var(--uc-green);color:var(--uc-green);border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;font-family:var(--f)}
+
+  /* CHECKIN */
+  .checkin-list{display:flex;flex-direction:column;gap:8px}
+  .checkin-item{background:var(--uc-surface);border-radius:8px;padding:10px 12px;display:flex;align-items:center;gap:10px}
+  .checkin-name{font-size:12px;font-weight:500;flex:1}
+  .checkin-time{font-size:11px;color:var(--uc-muted);font-family:var(--fm)}
+  .checkin-score{font-size:11px;border-radius:20px;padding:2px 8px;font-weight:600}
+
+  /* PROGRESS BAR */
+  .prog-bar{background:var(--uc-surface);border-radius:4px;height:4px;overflow:hidden;margin-top:6px}
+  .prog-fill{height:100%;border-radius:4px;background:var(--uc-teal);transition:width .5s}
+
+  .separator{height:1px;background:var(--uc-border);margin:16px 0}
+</style>
+
+<div class="app" id="app">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="logo">
+      <div class="logo-dot"></div>
+      UnifiCare
+    </div>
+    <div style="width:1px;height:20px;background:var(--uc-border);margin:0 8px"></div>
+    <div style="font-size:12px;color:var(--uc-muted)">Central de Monitoramento</div>
+    <div class="topbar-right">
+      <div class="alert-badge" onclick="navTo('urgent')">2 alertas ativos</div>
+      <div class="time" id="clock">--:--:--</div>
+      <div class="avatar">FC</div>
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div style="padding:8px 16px 4px;font-size:11px;color:var(--uc-muted)">MÓDULOS</div>
+    <div class="nav-item active" onclick="navTo('dashboard')" id="nav-dashboard">
+      <span class="nav-icon">◉</span> Dashboard
+    </div>
+    <div class="nav-item" onclick="navTo('monitor')" id="nav-monitor">
+      <span class="nav-icon">◎</span> Monitor.IA
+      <span class="nav-badge yellow">3</span>
+    </div>
+    <div class="nav-item" onclick="navTo('urgent')" id="nav-urgent">
+      <span class="nav-icon">◈</span> Urgent.IA
+      <span class="nav-badge">2</span>
+    </div>
+    <div class="nav-item" onclick="navTo('concilia')" id="nav-concilia">
+      <span class="nav-icon">◇</span> Concil.IA
+    </div>
+    <div class="nav-item" onclick="navTo('checkin')" id="nav-checkin">
+      <span class="nav-icon">◻</span> Check-ins
+    </div>
+    <div class="nav-section">Gestão</div>
+    <div class="nav-item" onclick="navTo('familia')" id="nav-familia">
+      <span class="nav-icon">◯</span> Famílias
+    </div>
+    <div class="nav-item" onclick="navTo('relatorios')" id="nav-relatorios">
+      <span class="nav-icon">≡</span> Relatórios
+    </div>
+    <div class="sidebar-bottom">
+      <div class="op-card">
+        <div class="op-avatar">FC</div>
+        <div class="op-info">
+          <p>Fabricio C.</p>
+          <span>Operador</span>
+        </div>
+        <div class="status-dot"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- ═══ DASHBOARD ═══ -->
+    <div class="page active" id="page-dashboard">
+      <div class="section-header">
+        <div>
+          <div class="section-title">Visão Geral</div>
+          <div class="section-sub">Quarta-feira, 22 de Abril de 2026</div>
+        </div>
+        <button class="btn">+ Novo Paciente</button>
+      </div>
+
+      <div class="metrics">
+        <div class="metric ok">
+          <div class="metric-label">Pacientes Ativos</div>
+          <div class="metric-value">12</div>
+          <div class="metric-sub"><span>↑ 2</span> este mês</div>
+        </div>
+        <div class="metric danger">
+          <div class="metric-label">Alertas Abertos</div>
+          <div class="metric-value">2</div>
+          <div class="metric-sub">Requerem atenção</div>
+        </div>
+        <div class="metric warning">
+          <div class="metric-label">Check-ins Pendentes</div>
+          <div class="metric-value">3</div>
+          <div class="metric-sub">Hoje até 20h</div>
+        </div>
+        <div class="metric info">
+          <div class="metric-label">Medicações Hoje</div>
+          <div class="metric-value">94%</div>
+          <div class="metric-sub"><span>↑ 3%</span> vs ontem</div>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <div style="font-size:13px;font-weight:600">Pacientes — Status Atual</div>
+            <button class="btn-ghost" onclick="navTo('monitor')">Ver todos</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div class="patient-card critical" onclick="navTo('urgent')">
+              <div class="pt-header">
+                <div class="pt-avatar">ML</div>
+                <div><div class="pt-name">Maria Luiza S.</div><div class="pt-age">84 anos · Setor Norte</div></div>
+                <div class="pt-status critical">Alerta</div>
+              </div>
+              <div class="pt-vitals">
+                <div class="vital"><div class="vital-label">FC</div><div class="vital-value alert">108 bpm</div></div>
+                <div class="vital"><div class="vital-label">SpO2</div><div class="vital-value alert">91%</div></div>
+              </div>
+              <div class="pt-last"><span>Último contato: 14 min atrás</span><span style="color:var(--uc-red);font-size:10px;font-weight:600">● SEM RESPOSTA</span></div>
+            </div>
+            <div class="patient-card warning">
+              <div class="pt-header">
+                <div class="pt-avatar" style="color:var(--uc-yellow)">JA</div>
+                <div><div class="pt-name">José Almeida R.</div><div class="pt-age">78 anos · Setor Sul</div></div>
+                <div class="pt-status attention">Atenção</div>
+              </div>
+              <div class="pt-vitals">
+                <div class="vital"><div class="vital-label">FC</div><div class="vital-value warn">92 bpm</div></div>
+                <div class="vital"><div class="vital-label">SpO2</div><div class="vital-value">96%</div></div>
+              </div>
+              <div class="pt-last"><span>Último contato: 2h atrás</span><span style="color:var(--uc-yellow);font-size:10px;font-weight:600">● CHECK-IN ATR.</span></div>
+            </div>
+            <div class="patient-card ok">
+              <div class="pt-header">
+                <div class="pt-avatar" style="color:var(--uc-teal)">CM</div>
+                <div><div class="pt-name">Clara Meireles F.</div><div class="pt-age">81 anos · Setor Leste</div></div>
+                <div class="pt-status stable">Estável</div>
+              </div>
+              <div class="pt-vitals">
+                <div class="vital"><div class="vital-label">FC</div><div class="vital-value">72 bpm</div></div>
+                <div class="vital"><div class="vital-label">SpO2</div><div class="vital-value">98%</div></div>
+              </div>
+              <div class="pt-last"><span>Último contato: 30 min atrás</span><span style="color:var(--uc-green);font-size:10px;font-weight:600">● OK</span></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:12px">
+            <div class="card-title">Alertas Recentes <span>ao vivo</span></div>
+            <div class="alert-list">
+              <div class="alert-item">
+                <span class="alert-icon">⚡</span>
+                <div class="alert-body"><p>SpO2 abaixo de 92% — Maria Luiza</p><span>Smartwatch detectou queda de saturação</span></div>
+                <span class="alert-time">14:32</span>
+              </div>
+              <div class="alert-item">
+                <span class="alert-icon">⚡</span>
+                <div class="alert-body"><p>Sem resposta ao check-in — Maria Luiza</p><span>3 tentativas sem retorno</span></div>
+                <span class="alert-time">14:18</span>
+              </div>
+              <div class="alert-item warn">
+                <span class="alert-icon">△</span>
+                <div class="alert-body"><p>Check-in atrasado — José Almeida</p><span>Janela de 2h ultrapassada</span></div>
+                <span class="alert-time">13:05</span>
+              </div>
+              <div class="alert-item ok">
+                <span class="alert-icon">✓</span>
+                <div class="alert-body"><p>Medicação confirmada — Clara Meireles</p><span>Caixa semanal — horário da tarde</span></div>
+                <span class="alert-time">12:50</span>
+              </div>
+              <div class="alert-item info">
+                <span class="alert-icon">◎</span>
+                <div class="alert-body"><p>Relatório diário gerado — 9 pacientes</p><span>Enviado para famílias às 12:00</span></div>
+                <span class="alert-time">12:00</span>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">Capacidade Operacional</div>
+            <div style="margin-bottom:10px">
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+                <span>Pacientes ativos / meta</span><span style="font-family:var(--fm);color:var(--uc-teal)">12 / 55</span>
+              </div>
+              <div class="prog-bar"><div class="prog-fill" style="width:22%"></div></div>
+            </div>
+            <div style="margin-bottom:10px">
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+                <span>Check-ins realizados hoje</span><span style="font-family:var(--fm);color:var(--uc-blue)">7 / 12</span>
+              </div>
+              <div class="prog-bar"><div class="prog-fill" style="width:58%;background:var(--uc-blue)"></div></div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px">
+                <span>Aderência medicamentos</span><span style="font-family:var(--fm);color:var(--uc-green)">94%</span>
+              </div>
+              <div class="prog-bar"><div class="prog-fill" style="width:94%;background:var(--uc-green)"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ MONITOR.IA ═══ -->
+    <div class="page" id="page-monitor">
+      <div class="section-header">
+        <div><div class="section-title">Monitor.IA</div><div class="section-sub">Vigilância contínua — 12 pacientes ativos</div></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn-ghost">Filtrar</button>
+          <button class="btn">+ Adicionar</button>
+        </div>
+      </div>
+      <div class="patient-grid">
+        <div class="patient-card critical" onclick="navTo('urgent')">
+          <div class="pt-header"><div class="pt-avatar">ML</div><div><div class="pt-name">Maria Luiza S.</div><div class="pt-age">84 anos</div></div><div class="pt-status critical">Alerta</div></div>
+          <div class="pt-vitals">
+            <div class="vital"><div class="vital-label">FC</div><div class="vital-value alert">108</div></div>
+            <div class="vital"><div class="vital-label">SpO2</div><div class="vital-value alert">91%</div></div>
+            <div class="vital"><div class="vital-label">Temp</div><div class="vital-value warn">37.9°</div></div>
+            <div class="vital"><div class="vital-label">GPS</div><div class="vital-value" style="font-size:10px">Casa ✓</div></div>
+          </div>
+          <div class="pt-last"><span>14 min · SEM RESP.</span><span style="color:var(--uc-red);font-size:10px">● CRÍTICO</span></div>
+        </div>
+        <div class="patient-card warning">
+          <div class="pt-header"><div class="pt-avatar" style="color:var(--uc-yellow)">JA</div><div><div class="pt-name">José Almeida R.</div><div class="pt-age">78 anos</div></div><div class="pt-status attention">Atenção</div></div>
+          <div class="pt-vitals">
+            <div class="vital"><div class="vital-label">FC</div><div class="vital-value warn">92</div></div>
+            <div class="vital"><div class="vital-label">SpO2</div><div class="vital-value">96%</div></div>
+            <div class="vital"><div class="vital-label">Temp</div><div class="vital-value">36.8°</div></div>
+            <div class="vital"><div class="vital-label">GPS</div><div class="vital-value" style="font-size:10px">Casa ✓</div></div>
+          </div>
+          <div class="pt-last"><span>2h atrás</span><span style="color:var(--uc-yellow);font-size:10px">● ATENÇÃO</span></div>
+        </div>
+        <div class="patient-card ok">
+          <div class="pt-header"><div class="pt-avatar" style="color:var(--uc-teal)">CM</div><div><div class="pt-name">Clara Meireles F.</div><div class="pt-age">81 anos</div></div><div class="pt-status stable">Estável</div></div>
+          <div class="pt-vitals">
+            <div class="vital"><div class="vital-label">FC</div><div class="vital-value">72</div></div>
+            <div class="vital"><div class="vital-label">SpO2</div><div class="vital-value">98%</div></div>
+            <div class="vital"><div class="vital-label">Temp</div><div class="vital-value">36.5°</div></div>
+            <div class="vital"><div class="vital-label">GPS</div><div class="vital-value" style="font-size:10px">Casa ✓</div></div>
+          </div>
+          <div class="pt-last"><span>30 min</span><span style="color:var(--uc-green);font-size:10px">● OK</span></div>
+        </div>
+        <div class="patient-card ok">
+          <div class="pt-header"><div class="pt-avatar" style="color:var(--uc-blue)">AR</div><div><div class="pt-name">Antônio Ribeiro</div><div class="pt-age">86 anos</div></div><div class="pt-status stable">Estável</div></div>
+          <div class="pt-vitals">
+            <div class="vital"><div class="vital-label">FC</div><div class="vital-value">68</div></div>
+            <div class="vital"><div class="vital-label">SpO2</div><div class="vital-value">97%</div></div>
+            <div class="vital"><div class="vital-label">Temp</div><div class="vital-value">36.3°</div></div>
+            <div class="vital"><div class="vital-label">GPS</div><div class="vital-value" style="font-size:10px">Casa ✓</div></div>
+          </div>
+          <div class="pt-last"><span>45 min</span><span style="color:var(--uc-green);font-size:10px">● OK</span></div>
+        </div>
+        <div class="patient-card ok">
+          <div class="pt-header"><div class="pt-avatar" style="color:var(--uc-teal)">BN</div><div><div class="pt-name">Beatriz Nogueira</div><div class="pt-age">79 anos</div></div><div class="pt-status stable">Estável</div></div>
+          <div class="pt-vitals">
+            <div class="vital"><div class="vital-label">FC</div><div class="vital-value">75</div></div>
+            <div class="vital"><div class="vital-label">SpO2</div><div class="vital-value">99%</div></div>
+            <div class="vital"><div class="vital-label">Temp</div><div class="vital-value">36.7°</div></div>
+            <div class="vital"><div class="vital-label">GPS</div><div class="vital-value" style="font-size:10px">Casa ✓</div></div>
+          </div>
+          <div class="pt-last"><span>1h atrás</span><span style="color:var(--uc-green);font-size:10px">● OK</span></div>
+        </div>
+        <div class="patient-card ok">
+          <div class="pt-header"><div class="pt-avatar" style="color:var(--uc-blue)">DF</div><div><div class="pt-name">Darci Ferreira M.</div><div class="pt-age">83 anos</div></div><div class="pt-status stable">Estável</div></div>
+          <div class="pt-vitals">
+            <div class="vital"><div class="vital-label">FC</div><div class="vital-value">70</div></div>
+            <div class="vital"><div class="vital-label">SpO2</div><div class="vital-value">97%</div></div>
+            <div class="vital"><div class="vital-label">Temp</div><div class="vital-value">36.4°</div></div>
+            <div class="vital"><div class="vital-label">GPS</div><div class="vital-value" style="font-size:10px">Casa ✓</div></div>
+          </div>
+          <div class="pt-last"><span>55 min</span><span style="color:var(--uc-green);font-size:10px">● OK</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Sobre detecção por câmera — Limitação Técnica Conhecida</div>
+        <div style="background:var(--uc-surface);border:1px solid var(--uc-yellow);border-radius:8px;padding:12px;display:flex;gap:10px">
+          <span style="font-size:18px">△</span>
+          <div style="font-size:12px;color:var(--uc-muted);line-height:1.6">
+            As câmeras exibem o feed ao vivo para avaliação do <strong style="color:var(--uc-text)">operador humano</strong>. A detecção automática de queda por IA via câmera <strong style="color:var(--uc-yellow)">não está ativa</strong> nesta versão — taxa de erro em ambiente doméstico é inaceitável para tomada de decisão clínica. O operador usa o feed para confirmar eventos detectados pelo smartwatch.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ URGENT.IA ═══ -->
+    <div class="page" id="page-urgent">
+      <div class="section-header">
+        <div><div class="section-title">Urgent.IA</div><div class="section-sub">Protocolo de resposta a emergências — Humano sempre no loop</div></div>
+        <button class="btn-ghost">Histórico</button>
+      </div>
+
+      <div class="urgent-banner">
+        <span class="urgent-icon">⚡</span>
+        <div class="urgent-info">
+          <p>ALERTA ATIVO — Maria Luiza Santos, 84 anos</p>
+          <span>SpO2 91% + sem resposta ao check-in há 14 min · Smartwatch · Iniciado: 14:32</span>
+        </div>
+        <div class="urgent-actions">
+          <button class="btn-confirm" onclick="resolveAlert()">Paciente está bem</button>
+          <button class="btn-urgent" onclick="showSamu()">Acionar SAMU</button>
+        </div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <div class="card-title">Protocolo ativo — Queda / Sem Resposta</div>
+          <div class="protocol-flow">
+            <div class="pf-step ai">
+              <div class="pf-num done-step" style="border-color:var(--uc-green);color:var(--uc-green)">✓</div>
+              <div class="pf-text"><p>Smartwatch detectou FC elevada + SpO2 baixa</p><span>14:32 — Acelerômetro + sensor SpO2</span></div>
+              <span class="pf-tag ai-tag">IA</span>
+            </div>
+            <div class="pf-step ai">
+              <div class="pf-num" style="border-color:var(--uc-green);color:var(--uc-green)">✓</div>
+              <div class="pf-text"><p>ConectaLar tentou contato de voz (3x)</p><span>14:33 — Sem resposta em 30 segundos</span></div>
+              <span class="pf-tag ai-tag">IA</span>
+            </div>
+            <div class="pf-step human" style="background:var(--uc-blue-dim);border-color:var(--uc-blue)">
+              <div class="pf-num" style="border-color:var(--uc-blue);color:var(--uc-blue);animation:pulse 1s infinite">!</div>
+              <div class="pf-text"><p style="color:var(--uc-blue)">Operador: avaliar via câmera e voz</p><span>Feed disponível abaixo — AÇÃO NECESSÁRIA</span></div>
+              <span class="pf-tag human-tag">HUMANO</span>
+            </div>
+            <div class="pf-step" style="opacity:.4">
+              <div class="pf-num">4</div>
+              <div class="pf-text"><p>Operador decide acionar SAMU 192</p><span>Aguardando avaliação humana</span></div>
+              <span class="pf-tag human-tag">HUMANO</span>
+            </div>
+            <div class="pf-step" style="opacity:.4">
+              <div class="pf-num">5</div>
+              <div class="pf-text"><p>Notificação simultânea à família</p><span>Push + ligação automática</span></div>
+              <span class="pf-tag ai-tag">IA</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card" style="margin-bottom:12px">
+            <div class="card-title">Sinais Vitais — Maria Luiza</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+              <div class="vital" style="border:1px solid var(--uc-red)"><div class="vital-label">FC Atual</div><div class="vital-value alert" style="font-size:20px">108 bpm</div><div style="font-size:10px;color:var(--uc-muted)">Normal: 60-100</div></div>
+              <div class="vital" style="border:1px solid var(--uc-red)"><div class="vital-label">SpO2</div><div class="vital-value alert" style="font-size:20px">91%</div><div style="font-size:10px;color:var(--uc-muted)">Normal: 95-100%</div></div>
+              <div class="vital"><div class="vital-label">Temp.</div><div class="vital-value warn">37.9°C</div></div>
+              <div class="vital"><div class="vital-label">Localização</div><div class="vital-value" style="font-size:11px">Casa — GPS ✓</div></div>
+            </div>
+            <div style="font-size:11px;color:var(--uc-muted);margin-bottom:6px">FC últimas 2 horas</div>
+            <div class="sparkline">
+              <div class="spark-bar" style="height:30%"></div>
+              <div class="spark-bar" style="height:35%"></div>
+              <div class="spark-bar" style="height:32%"></div>
+              <div class="spark-bar" style="height:40%"></div>
+              <div class="spark-bar" style="height:38%"></div>
+              <div class="spark-bar" style="height:45%"></div>
+              <div class="spark-bar" style="height:50%"></div>
+              <div class="spark-bar" style="height:55%"></div>
+              <div class="spark-bar" style="height:60%"></div>
+              <div class="spark-bar" style="height:70%"></div>
+              <div class="spark-bar alert" style="height:85%"></div>
+              <div class="spark-bar alert" style="height:90%"></div>
+              <div class="spark-bar alert" style="height:95%"></div>
+              <div class="spark-bar alert" style="height:100%"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-title">Contatos de Emergência</div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:8px;background:var(--uc-surface);border-radius:8px">
+                <div><div style="font-size:12px;font-weight:500">Ana Paula Santos</div><div style="font-size:11px;color:var(--uc-muted)">Filha · (34) 9 9821-4455</div></div>
+                <button class="btn" style="padding:5px 10px;font-size:11px">Ligar</button>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:8px;background:var(--uc-surface);border-radius:8px">
+                <div><div style="font-size:12px;font-weight:500">Carlos Santos</div><div style="font-size:11px;color:var(--uc-muted)">Filho · (34) 9 9654-2210</div></div>
+                <button class="btn" style="padding:5px 10px;font-size:11px">Ligar</button>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:space-between;padding:8px;background:var(--uc-surface);border-radius:8px">
+                <div><div style="font-size:12px;font-weight:500">SAMU — 192</div><div style="font-size:11px;color:var(--uc-muted)">Acionamento manual pelo operador</div></div>
+                <button class="btn-urgent" style="padding:5px 10px;font-size:11px" onclick="showSamu()">192</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ CONCIL.IA ═══ -->
+    <div class="page" id="page-concilia">
+      <div class="section-header">
+        <div><div class="section-title">Concil.IA</div><div class="section-sub">Gestão e conciliação de medicamentos</div></div>
+        <button class="btn">+ Importar Receita</button>
+      </div>
+      <div class="metrics" style="grid-template-columns:repeat(3,1fr)">
+        <div class="metric ok"><div class="metric-label">Aderência Geral</div><div class="metric-value">94%</div><div class="metric-sub"><span>↑ 3%</span> vs semana</div></div>
+        <div class="metric warning"><div class="metric-label">Doses Atrasadas</div><div class="metric-value">3</div><div class="metric-sub">Hoje</div></div>
+        <div class="metric danger"><div class="metric-label">Interações Detectadas</div><div class="metric-value">1</div><div class="metric-sub">Requer revisão médica</div></div>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <div class="card-title">Maria Luiza Santos — Medicamentos</div>
+          <table class="med-table">
+            <thead><tr><th>Medicamento</th><th>Dose</th><th>Horário</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td>Metoprolol 25mg</td><td>1 cp</td><td>08:00</td><td><span class="pill green">Tomado</span></td></tr>
+              <tr><td>Losartana 50mg</td><td>1 cp</td><td>08:00</td><td><span class="pill green">Tomado</span></td></tr>
+              <tr><td>AAS 100mg</td><td>1 cp</td><td>12:00</td><td><span class="pill yellow">Atrasado</span></td></tr>
+              <tr><td>Atorvastatina 20mg</td><td>1 cp</td><td>20:00</td><td><span class="pill blue">Pendente</span></td></tr>
+              <tr><td>Omeprazol 20mg</td><td>1 cp</td><td>07:30</td><td><span class="pill green">Tomado</span></td></tr>
+            </tbody>
+          </table>
+          <div style="margin-top:12px;background:var(--uc-red-dim);border:1px solid var(--uc-red);border-radius:8px;padding:10px;font-size:12px">
+            <strong style="color:var(--uc-red)">Interação detectada:</strong><span style="color:var(--uc-muted)"> Metoprolol + AAS — Monitorar PA. Revisar com médico responsável.</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Aderência Semanal — Todos os Pacientes</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Clara Meireles</span><span style="color:var(--uc-green);font-family:var(--fm)">100%</span></div><div class="prog-bar"><div class="prog-fill" style="width:100%;background:var(--uc-green)"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Antônio Ribeiro</span><span style="color:var(--uc-green);font-family:var(--fm)">98%</span></div><div class="prog-bar"><div class="prog-fill" style="width:98%;background:var(--uc-green)"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Beatriz Nogueira</span><span style="color:var(--uc-teal);font-family:var(--fm)">95%</span></div><div class="prog-bar"><div class="prog-fill" style="width:95%"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>José Almeida</span><span style="color:var(--uc-yellow);font-family:var(--fm)">87%</span></div><div class="prog-bar"><div class="prog-fill" style="width:87%;background:var(--uc-yellow)"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Maria Luiza</span><span style="color:var(--uc-red);font-family:var(--fm)">73%</span></div><div class="prog-bar"><div class="prog-fill" style="width:73%;background:var(--uc-red)"></div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ CHECK-INS ═══ -->
+    <div class="page" id="page-checkin">
+      <div class="section-header">
+        <div><div class="section-title">Check-ins</div><div class="section-sub">IA Conversacional — Roteamento de anomalias para operador humano</div></div>
+        <button class="btn">Iniciar Manual</button>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <div class="card-title">Check-ins de Hoje</div>
+          <div class="checkin-list">
+            <div class="checkin-item">
+              <div class="checkin-name">Clara Meireles F.</div>
+              <div class="checkin-time">09:00</div>
+              <div class="checkin-score" style="background:var(--uc-green-dim);color:var(--uc-green)">Normal</div>
+            </div>
+            <div class="checkin-item">
+              <div class="checkin-name">Antônio Ribeiro</div>
+              <div class="checkin-time">09:15</div>
+              <div class="checkin-score" style="background:var(--uc-green-dim);color:var(--uc-green)">Normal</div>
+            </div>
+            <div class="checkin-item">
+              <div class="checkin-name">Beatriz Nogueira</div>
+              <div class="checkin-time">09:30</div>
+              <div class="checkin-score" style="background:var(--uc-green-dim);color:var(--uc-green)">Normal</div>
+            </div>
+            <div class="checkin-item">
+              <div class="checkin-name">Darci Ferreira M.</div>
+              <div class="checkin-time">10:00</div>
+              <div class="checkin-score" style="background:var(--uc-green-dim);color:var(--uc-green)">Normal</div>
+            </div>
+            <div class="checkin-item" style="border:1px solid var(--uc-yellow)">
+              <div class="checkin-name">José Almeida R.</div>
+              <div class="checkin-time">11:00</div>
+              <div class="checkin-score" style="background:var(--uc-yellow-dim);color:var(--uc-yellow)">Atrasado</div>
+            </div>
+            <div class="checkin-item" style="border:1px solid var(--uc-red)">
+              <div class="checkin-name">Maria Luiza Santos</div>
+              <div class="checkin-time">14:18</div>
+              <div class="checkin-score" style="background:var(--uc-red-dim);color:var(--uc-red)">Sem resp.</div>
+            </div>
+            <div class="checkin-item" style="opacity:.5">
+              <div class="checkin-name">Outros 6 pacientes</div>
+              <div class="checkin-time">tarde</div>
+              <div class="checkin-score" style="background:var(--uc-hint);color:var(--uc-muted)">Pendente</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Fluxo de Check-in — ConectaLar</div>
+          <div style="background:var(--uc-surface);border-radius:10px;padding:14px;font-size:12px;margin-bottom:12px">
+            <div style="color:var(--uc-muted);margin-bottom:8px;font-size:11px">Transcrição — Clara Meireles · 09:00</div>
+            <div style="margin-bottom:8px"><span style="color:var(--uc-teal);font-weight:500">IA:</span><span style="color:var(--uc-muted)"> "Bom dia, Clara! Como a senhora está se sentindo hoje?"</span></div>
+            <div style="margin-bottom:8px"><span style="color:var(--uc-blue);font-weight:500">Clara:</span><span style="color:var(--uc-muted)"> "Bom dia! Estou bem, obrigada. Dormi bem essa noite."</span></div>
+            <div style="margin-bottom:8px"><span style="color:var(--uc-teal);font-weight:500">IA:</span><span style="color:var(--uc-muted)"> "Ótimo! A senhora tomou os remédios da manhã?"</span></div>
+            <div><span style="color:var(--uc-blue);font-weight:500">Clara:</span><span style="color:var(--uc-muted)"> "Sim, tomei todos. Também bebi água."</span></div>
+          </div>
+          <div style="background:var(--uc-green-dim);border:1px solid var(--uc-green);border-radius:8px;padding:10px;font-size:12px">
+            <strong style="color:var(--uc-green)">Avaliação IA:</strong><span style="color:var(--uc-muted)"> Fala clara, respostas coerentes, humor positivo. Sem anomalias detectadas. Nenhuma escalada necessária.</span>
+          </div>
+          <div class="separator"></div>
+          <div style="background:var(--uc-orange-dim);border:1px solid var(--uc-orange);border-radius:8px;padding:10px;font-size:12px">
+            <strong style="color:var(--uc-orange)">Nota técnica:</strong><span style="color:var(--uc-muted)"> Anomalias na fala (lentidão, confusão) são sinalizadas para <strong style="color:var(--uc-text)">avaliação do operador humano</strong>, não para ação automática. A IA sinaliza — o humano decide.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ FAMÍLIAS ═══ -->
+    <div class="page" id="page-familia">
+      <div class="section-header">
+        <div><div class="section-title">Famílias e Planos</div><div class="section-sub">Gestão de contratos e comunicação</div></div>
+        <button class="btn">+ Novo Contrato</button>
+      </div>
+      <div class="metrics" style="grid-template-columns:repeat(3,1fr)">
+        <div class="metric info"><div class="metric-label">Plano Essencial</div><div class="metric-value">5</div><div class="metric-sub">R$ 899/mês cada</div></div>
+        <div class="metric ok"><div class="metric-label">Plano Padrão</div><div class="metric-value">5</div><div class="metric-sub">R$ 1.099/mês cada</div></div>
+        <div class="metric info"><div class="metric-label">Plano Premium</div><div class="metric-value">2</div><div class="metric-sub">R$ 1.249/mês cada</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Pacientes e Contratos Ativos</div>
+        <table class="med-table">
+          <thead><tr><th>Paciente</th><th>Idade</th><th>Responsável</th><th>Plano</th><th>Início</th><th>Relatório</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Maria Luiza S.</strong></td><td>84</td><td>Ana Paula Santos</td><td><span class="pill blue">Premium</span></td><td>Jan/26</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Ver</button></td></tr>
+            <tr><td><strong>José Almeida R.</strong></td><td>78</td><td>Pedro Almeida</td><td><span class="pill green">Padrão</span></td><td>Fev/26</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Ver</button></td></tr>
+            <tr><td><strong>Clara Meireles F.</strong></td><td>81</td><td>Luciana Meireles</td><td><span class="pill green">Padrão</span></td><td>Fev/26</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Ver</button></td></tr>
+            <tr><td><strong>Antônio Ribeiro</strong></td><td>86</td><td>Cláudio Ribeiro</td><td><span class="pill yellow">Essencial</span></td><td>Mar/26</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Ver</button></td></tr>
+            <tr><td><strong>Beatriz Nogueira</strong></td><td>79</td><td>Sandra Nogueira</td><td><span class="pill yellow">Essencial</span></td><td>Mar/26</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Ver</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══ RELATÓRIOS ═══ -->
+    <div class="page" id="page-relatorios">
+      <div class="section-header">
+        <div><div class="section-title">Relatórios</div><div class="section-sub">Síntese.IA — Gerados automaticamente às 12:00</div></div>
+        <button class="btn">Gerar Agora</button>
+      </div>
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">Resumo Operacional — Hoje</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+          <div style="background:var(--uc-surface);border-radius:8px;padding:12px;text-align:center"><div style="font-size:22px;font-weight:600;color:var(--uc-teal);font-family:var(--fm)">12</div><div style="font-size:11px;color:var(--uc-muted)">Pacientes monitorados</div></div>
+          <div style="background:var(--uc-surface);border-radius:8px;padding:12px;text-align:center"><div style="font-size:22px;font-weight:600;color:var(--uc-green);font-family:var(--fm)">7</div><div style="font-size:11px;color:var(--uc-muted)">Check-ins ok</div></div>
+          <div style="background:var(--uc-surface);border-radius:8px;padding:12px;text-align:center"><div style="font-size:22px;font-weight:600;color:var(--uc-red);font-family:var(--fm)">2</div><div style="font-size:11px;color:var(--uc-muted)">Alertas abertos</div></div>
+          <div style="background:var(--uc-surface);border-radius:8px;padding:12px;text-align:center"><div style="font-size:22px;font-weight:600;color:var(--uc-blue);font-family:var(--fm)">94%</div><div style="font-size:11px;color:var(--uc-muted)">Aderência med.</div></div>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="card">
+          <div class="card-title">Relatórios para Famílias — Hoje</div>
+          <div class="alert-list">
+            <div class="alert-item ok"><span class="alert-icon">✓</span><div class="alert-body"><p>Clara Meireles — Relatório enviado</p><span>Enviado às 12:00 para Luciana Meireles</span></div><span class="alert-time">12:00</span></div>
+            <div class="alert-item ok"><span class="alert-icon">✓</span><div class="alert-body"><p>Antônio Ribeiro — Relatório enviado</p><span>Enviado para Cláudio Ribeiro</span></div><span class="alert-time">12:00</span></div>
+            <div class="alert-item ok"><span class="alert-icon">✓</span><div class="alert-body"><p>Beatriz Nogueira — Relatório enviado</p><span>Enviado para Sandra Nogueira</span></div><span class="alert-time">12:00</span></div>
+            <div class="alert-item warn"><span class="alert-icon">△</span><div class="alert-body"><p>Maria Luiza Santos — Alerta incluso</p><span>Família notificada sobre ocorrência</span></div><span class="alert-time">14:33</span></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Dados do MVP — Progresso</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Meta break-even (55 clientes)</span><span style="color:var(--uc-teal);font-family:var(--fm)">12 / 55</span></div><div class="prog-bar"><div class="prog-fill" style="width:22%"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Receita mensal atual</span><span style="color:var(--uc-blue);font-family:var(--fm)">R$ 13.088</span></div><div class="prog-bar"><div class="prog-fill" style="width:22%;background:var(--uc-blue)"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>NPS famílias (meta 70+)</span><span style="color:var(--uc-green);font-family:var(--fm)">74</span></div><div class="prog-bar"><div class="prog-fill" style="width:74%;background:var(--uc-green)"></div></div></div>
+          </div>
+          <div class="separator"></div>
+          <div style="font-size:11px;color:var(--uc-muted);line-height:1.6">Fase piloto · 10–15 clientes · Operação supervisionada por humanos · Coleta de dados para futura automação gradual</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function navTo(page) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    const pg = document.getElementById('page-' + page);
+    const nv = document.getElementById('nav-' + page);
+    if (pg) pg.classList.add('active');
+    if (nv) nv.classList.add('active');
+    document.querySelector('.main').scrollTop = 0;
+  }
+
+  function resolveAlert() {
+    const banner = document.querySelector('.urgent-banner');
+    if (banner) {
+      banner.style.background = 'var(--uc-green-dim)';
+      banner.style.borderColor = 'var(--uc-green)';
+      banner.style.animation = 'none';
+      banner.querySelector('p').style.color = 'var(--uc-green)';
+      banner.querySelector('p').textContent = 'RESOLVIDO — Operador confirmou: paciente está bem';
+      banner.querySelector('.urgent-actions').innerHTML = '<span style="font-size:12px;color:var(--uc-green)">Registrado às ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'}) + '</span>';
+      document.querySelector('.alert-badge').style.display = 'none';
+    }
+  }
+
+  function showSamu() {
+    const banner = document.querySelector('.urgent-banner');
+    if (banner) {
+      banner.querySelector('p').textContent = 'SAMU 192 acionado pelo operador — Aguardando confirmação';
+      banner.querySelector('.urgent-actions').innerHTML = '<span style="font-size:12px;color:var(--uc-red);font-weight:600">● SAMU acionado · ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'}) + '</span>';
+    }
+  }
+
+  function tick() {
+    const el = document.getElementById('clock');
+    if (el) el.textContent = new Date().toLocaleTimeString('pt-BR');
+  }
+  tick();
+  setInterval(tick, 1000);
+</script>
