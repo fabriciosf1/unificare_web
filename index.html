@@ -1678,10 +1678,11 @@
     </div>
     <div class="modal-body" style="text-align:center">
       <div style="width:100%;aspect-ratio:4/3;background:#000;border-radius:12px;margin-bottom:15px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">
-        <div style="border:2px solid rgba(45,212,191,0.5);width:80%;height:60%;position:absolute"></div>
-        <span style="color:#fff;font-size:12px">Enquadre o laudo impresso na área central</span>
+        <video id="ocr-video" autoplay playsinline style="width:100%;height:100%;object-fit:cover"></video>
+        <div style="border:2px solid rgba(45,212,191,0.5);width:80%;height:60%;position:absolute;pointer-events:none"></div>
+        <div id="camera-error" style="display:none;color:#fff;font-size:12px;padding:20px">Aguardando permissão da câmera...</div>
       </div>
-      <div style="font-size:11px;color:var(--uc-muted);margin-bottom:15px">A IA irá transcrever os valores automaticamente.</div>
+      <div style="font-size:11px;color:var(--uc-muted);margin-bottom:15px">A IA irá transcrever os valores automaticamente após a captura.</div>
       <button class="btn" style="width:100%;justify-content:center;height:45px" onclick="saveExam()">Capturar e Processar</button>
     </div>
   </div>
@@ -2094,12 +2095,39 @@
     navTo(allowed[0]);
   }
 
+  let cameraStream = null;
+
+  async function startCamera() {
+    const video = document.getElementById('ocr-video');
+    const errorEl = document.getElementById('camera-error');
+    errorEl.style.display = 'block';
+    try {
+      cameraStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+      video.srcObject = cameraStream;
+      errorEl.style.display = 'none';
+    } catch (err) {
+      errorEl.textContent = 'Erro ao acessar câmera: ' + err.message;
+      showSystemAlert('Erro de Câmera', 'Não foi possível acessar a câmera. Verifique as permissões do navegador.', '❌');
+    }
+  }
+
+  function stopCamera() {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach(track => track.stop());
+      cameraStream = null;
+    }
+    const video = document.getElementById('ocr-video');
+    if (video) video.srcObject = null;
+  }
+
   function openModal(id) {
     document.getElementById('modal-' + id).classList.add('active');
+    if (id === 'upload-ocr') startCamera();
   }
 
   function closeModal(id) {
     document.getElementById('modal-' + id).classList.remove('active');
+    if (id === 'upload-ocr') stopCamera();
   }
 
   function savePatient() {
