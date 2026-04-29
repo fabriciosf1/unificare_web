@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 420" fill="none">
+  <!-- Mão esquerda (verde) -->
+  <path d="M100 280c-20-30-30-70-25-110 5-40 25-70 55-90 10 30 10 65 0 95-10 30-20 55-30 75l-10 20z" fill="url(#gLeft)"/>
+  <!-- Mão direita (azul marinho) -->
+  <path d="M300 280c20-30 30-70 25-110-5-40-25-70-55-90-10 30-10 65 0 95 10 30 20 55 30 75l10 20z" fill="url(#gRight)"/>
+  <!-- Pessoa central (azul marinho) -->
+  <circle cx="200" cy="80" r="28" fill="#1A3A5C"/>
+  <path d="M160 130c0-10 18-25 40-25s40 15 40 25c0 30-15 80-20 110-2 10-5 15-20 15s-18-5-20-15c-5-30-20-80-20-110z" fill="#1A3A5C"/>
+  <!-- Check verde central -->
+  <path d="M180 190l15 18 25-35" stroke="#4CAF50" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <!-- Pessoa esquerda (verde) -->
+  <circle cx="120" cy="105" r="18" fill="#4CAF50"/>
+  <path d="M105 135c0-5 7-12 15-12s15 7 15 12c0 15-5 40-8 55-1 5-3 8-7 8s-6-3-7-8c-3-15-8-40-8-55z" fill="#4CAF50"/>
+  <!-- Pessoa direita (verde) -->
+  <circle cx="280" cy="105" r="18" fill="#4CAF50"/>
+  <path d="M265 135c0-5 7-12 15-12s15 7 15 12c0 15-5 40-8 55-1 5-3 8-7 8s-6-3-7-8c-3-15-8-40-8-55z" fill="#4CAF50"/>
+  <!-- Texto "UnifiCare" -->
+  <text x="200" y="350" text-anchor="middle" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="52" font-weight="700">
+    <tspan fill="#1A3A5C">Unifi</tspan><tspan fill="#4CAF50">Care</tspan>
+  </text>
+  <!-- Slogan -->
+  <text x="200" y="385" text-anchor="middle" font-family="'Segoe UI','Helvetica Neue',Arial,sans-serif" font-size="14" fill="#1A3A5C" letter-spacing="0.5">
+    Tecnologia que cuida — Pessoas que conectam
+  </text>
+  <!-- Gradientes -->
+  <defs>
+    <linearGradient id="gLeft" x1="75" y1="280" x2="130" y2="80" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#4CAF50"/>
+      <stop offset="100%" stop-color="#81C784"/>
+    </linearGradient>
+    <linearGradient id="gRight" x1="325" y1="280" x2="270" y2="80" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#1A3A5C"/>
+      <stop offset="100%" stop-color="#2C5F8A"/>
+    </linearGradient>
+  </defs>
+</svg>
