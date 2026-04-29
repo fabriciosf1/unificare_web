@@ -233,7 +233,7 @@
         <option value="familia">Família</option>
       </select>
       <button onclick="toggleTheme()" class="btn-ghost" id="theme-btn" style="border-radius:50%;width:32px;height:32px;padding:0;display:flex;align-items:center;justify-content:center;font-size:14px">🌙</button>
-      <div class="avatar">FC</div>
+      <div class="avatar" onclick="openModal('my-profile')" style="cursor:pointer" title="Meu Perfil">FC</div>
     </div>
   </div>
 
@@ -288,7 +288,7 @@
       <span class="nav-icon">🛡</span> Painel Admin
     </div>
     <div class="sidebar-bottom">
-      <div class="op-card">
+      <div class="op-card" onclick="openModal('my-profile')" style="cursor:pointer">
         <div class="op-avatar">FC</div>
         <div class="op-info">
           <p>Fabricio C.</p>
@@ -532,8 +532,8 @@
           <span>SpO2 91% + sem resposta ao check-in há 14 min · Smartwatch · Iniciado: 14:32</span>
         </div>
         <div class="urgent-actions">
-          <button class="btn-confirm" onclick="resolveAlert()">Paciente está bem</button>
-          <button class="btn-urgent" onclick="showSamu()">Acionar SAMU</button>
+          <button class="btn-confirm" onclick="confirmResolveAlert()">Paciente está bem</button>
+          <button class="btn-urgent" onclick="confirmShowSamu()">Acionar SAMU</button>
         </div>
       </div>
 
@@ -728,7 +728,7 @@
     <div class="page" id="page-familia">
       <div class="section-header">
         <div><div class="section-title">Famílias e Planos</div><div class="section-sub">Gestão de contratos e comunicação</div></div>
-        <button class="btn">+ Novo Contrato</button>
+        <button class="btn" onclick="openModal('new-family')">+ Novo Contrato</button>
       </div>
       <div class="metrics" style="grid-template-columns:repeat(3,1fr)">
         <div class="metric info"><div class="metric-label">Plano Essencial</div><div class="metric-value">5</div><div class="metric-sub">R$ 899/mês cada</div></div>
@@ -740,11 +740,11 @@
         <table class="med-table">
           <thead><tr><th>Paciente</th><th>Idade</th><th>Responsável</th><th>Plano</th><th>Início</th><th>Relatório</th></tr></thead>
           <tbody>
-            <tr><td><strong>Maria Luiza S.</strong></td><td>84</td><td>Ana Paula Santos</td><td><span class="pill blue">Premium</span></td><td>Jan/26</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Ver</button></td></tr>
-            <tr><td><strong>José Almeida R.</strong></td><td>78</td><td>Pedro Almeida</td><td><span class="pill green">Padrão</span></td><td>Fev/26</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Ver</button></td></tr>
-            <tr><td><strong>Clara Meireles F.</strong></td><td>81</td><td>Luciana Meireles</td><td><span class="pill green">Padrão</span></td><td>Fev/26</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Ver</button></td></tr>
-            <tr><td><strong>Antônio Ribeiro</strong></td><td>86</td><td>Cláudio Ribeiro</td><td><span class="pill yellow">Essencial</span></td><td>Mar/26</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Ver</button></td></tr>
-            <tr><td><strong>Beatriz Nogueira</strong></td><td>79</td><td>Sandra Nogueira</td><td><span class="pill yellow">Essencial</span></td><td>Mar/26</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Ver</button></td></tr>
+            <tr><td><strong>Maria Luiza S.</strong></td><td>84</td><td>Ana Paula Santos</td><td><span class="pill blue">Premium</span></td><td>Jan/26</td><td><div style="display:flex;gap:4px"><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Ver</button><button class="btn-ghost" onclick="confirmDelete('contrato')" style="padding:3px 8px;font-size:11px;color:var(--uc-red)">Excluir</button></div></td></tr>
+            <tr><td><strong>José Almeida R.</strong></td><td>78</td><td>Pedro Almeida</td><td><span class="pill green">Padrão</span></td><td>Fev/26</td><td><div style="display:flex;gap:4px"><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Ver</button><button class="btn-ghost" onclick="confirmDelete('contrato')" style="padding:3px 8px;font-size:11px;color:var(--uc-red)">Excluir</button></div></td></tr>
+            <tr><td><strong>Clara Meireles F.</strong></td><td>81</td><td>Luciana Meireles</td><td><span class="pill green">Padrão</span></td><td>Fev/26</td><td><div style="display:flex;gap:4px"><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Ver</button><button class="btn-ghost" onclick="confirmDelete('contrato')" style="padding:3px 8px;font-size:11px;color:var(--uc-red)">Excluir</button></div></td></tr>
+            <tr><td><strong>Antônio Ribeiro</strong></td><td>86</td><td>Cláudio Ribeiro</td><td><span class="pill yellow">Essencial</span></td><td>Mar/26</td><td><div style="display:flex;gap:4px"><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Ver</button><button class="btn-ghost" onclick="confirmDelete('contrato')" style="padding:3px 8px;font-size:11px;color:var(--uc-red)">Excluir</button></div></td></tr>
+            <tr><td><strong>Beatriz Nogueira</strong></td><td>79</td><td>Sandra Nogueira</td><td><span class="pill yellow">Essencial</span></td><td>Mar/26</td><td><div style="display:flex;gap:4px"><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Ver</button><button class="btn-ghost" onclick="confirmDelete('contrato')" style="padding:3px 8px;font-size:11px;color:var(--uc-red)">Excluir</button></div></td></tr>
           </tbody>
         </table>
       </div>
@@ -754,7 +754,7 @@
     <div class="page" id="page-relatorios">
       <div class="section-header">
         <div><div class="section-title">Relatórios</div><div class="section-sub">Síntese.IA — Gerados automaticamente às 12:00</div></div>
-        <button class="btn">Gerar Agora</button>
+        <button class="btn" onclick="openModal('generate-report')">Gerar Agora</button>
       </div>
       <div class="card" style="margin-bottom:16px">
         <div class="card-title">Resumo Operacional — Hoje</div>
@@ -831,7 +831,7 @@
       <div class="section-header"><div><div class="section-title">Medicamentos</div><div class="section-sub">Base de medicamentos e gestão de posologia</div></div>
         <div style="display:flex;gap:8px">
           <button class="btn-ghost" onclick="openModal('import-recipe')">Importar Receita</button>
-          <button class="btn">+ Novo Medicamento</button>
+          <button class="btn" onclick="openModal('new-medication')">+ Novo Medicamento</button>
         </div>
       </div>
       <div class="metrics" style="grid-template-columns:repeat(3,1fr)">
@@ -864,7 +864,7 @@
 
     <!-- ═══ AGENDAMENTOS ═══ -->
     <div class="page" id="page-agendamentos">
-      <div class="section-header"><div><div class="section-title">Agendamentos</div><div class="section-sub">Consultas e exames programados</div></div><button class="btn">+ Novo Agendamento</button></div>
+      <div class="section-header"><div><div class="section-title">Agendamentos</div><div class="section-sub">Consultas e exames programados</div></div><button class="btn" onclick="openModal('new-appointment')">+ Novo Agendamento</button></div>
       <div class="metrics" style="grid-template-columns:repeat(4,1fr)">
         <div class="metric ok"><div class="metric-label">Hoje</div><div class="metric-value">3</div><div class="metric-sub">Consultas/exames</div></div>
         <div class="metric info"><div class="metric-label">Esta Semana</div><div class="metric-value">8</div><div class="metric-sub">Programados</div></div>
@@ -888,7 +888,7 @@
 
     <!-- ═══ EXAMES ═══ -->
     <div class="page" id="page-exames">
-      <div class="section-header"><div><div class="section-title">Exames</div><div class="section-sub">Resultados e laudos — upload por arquivo, formulário ou foto</div></div><button class="btn">+ Upload de Exame</button></div>
+      <div class="section-header"><div><div class="section-title">Exames</div><div class="section-sub">Resultados e laudos — upload por arquivo, formulário ou foto</div></div><button class="btn" onclick="openModal('upload-exam')">+ Upload de Exame</button></div>
       <div class="metrics" style="grid-template-columns:repeat(3,1fr)">
         <div class="metric ok"><div class="metric-label">Exames Registrados</div><div class="metric-value">32</div><div class="metric-sub">Total na base</div></div>
         <div class="metric info"><div class="metric-label">Aguardando Laudo</div><div class="metric-value">4</div><div class="metric-sub">Em análise</div></div>
@@ -930,7 +930,7 @@
 
     <!-- ═══ USUÁRIOS ═══ -->
     <div class="page" id="page-usuarios">
-      <div class="section-header"><div><div class="section-title">Gestão de Usuários</div><div class="section-sub">Todos os perfis do sistema</div></div><button class="btn">+ Novo Usuário</button></div>
+      <div class="section-header"><div><div class="section-title">Gestão de Usuários</div><div class="section-sub">Todos os perfis do sistema</div></div><button class="btn" onclick="openModal('new-user')">+ Novo Usuário</button></div>
       <div class="metrics" style="grid-template-columns:repeat(5,1fr)">
         <div class="metric"><div class="metric-label">Idosos</div><div class="metric-value" style="color:var(--uc-teal)">12</div></div>
         <div class="metric"><div class="metric-label">Familiares</div><div class="metric-value" style="color:var(--uc-blue)">18</div></div>
@@ -943,11 +943,11 @@
         <table class="med-table">
           <thead><tr><th>Nome</th><th>Email</th><th>Perfil</th><th>Status</th><th>Último Acesso</th><th>Ações</th></tr></thead>
           <tbody>
-            <tr><td><strong>Fabricio C.</strong></td><td>fabricio@unificare.com</td><td><span class="pill red">Admin</span></td><td><span class="pill green">Ativo</span></td><td>Agora</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Editar</button></td></tr>
-            <tr><td><strong>Dr. Ricardo Mendes</strong></td><td>ricardo@clinica.com</td><td><span class="pill blue">Médico</span></td><td><span class="pill green">Ativo</span></td><td>Hoje 10:30</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Editar</button></td></tr>
-            <tr><td><strong>Ana Paula Santos</strong></td><td>ana.paula@email.com</td><td><span class="pill yellow">Família</span></td><td><span class="pill green">Ativo</span></td><td>Hoje 14:35</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Editar</button></td></tr>
-            <tr><td><strong>Maria Luiza S.</strong></td><td>—</td><td><span class="pill green">Idoso</span></td><td><span class="pill green">Ativo</span></td><td>Smartwatch</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Editar</button></td></tr>
-            <tr><td><strong>Carlos Operador</strong></td><td>carlos@unificare.com</td><td><span class="pill blue">Back Office</span></td><td><span class="pill green">Ativo</span></td><td>Hoje 13:00</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Editar</button></td></tr>
+            <tr><td><strong>Fabricio C.</strong></td><td>fabricio@unificare.com</td><td><span class="pill red">Admin</span></td><td><span class="pill green">Ativo</span></td><td>Agora</td><td><div style="display:flex;gap:4px"><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Editar</button><button class="btn-ghost" onclick="confirmDelete('usuário')" style="padding:3px 8px;font-size:11px;color:var(--uc-red)">Excluir</button></div></td></tr>
+            <tr><td><strong>Dr. Ricardo Mendes</strong></td><td>ricardo@clinica.com</td><td><span class="pill blue">Médico</span></td><td><span class="pill green">Ativo</span></td><td>Hoje 10:30</td><td><div style="display:flex;gap:4px"><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Editar</button><button class="btn-ghost" onclick="confirmDelete('usuário')" style="padding:3px 8px;font-size:11px;color:var(--uc-red)">Excluir</button></div></td></tr>
+            <tr><td><strong>Ana Paula Santos</strong></td><td>ana.paula@email.com</td><td><span class="pill yellow">Família</span></td><td><span class="pill green">Ativo</span></td><td>Hoje 14:35</td><td><div style="display:flex;gap:4px"><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Editar</button><button class="btn-ghost" onclick="confirmDelete('usuário')" style="padding:3px 8px;font-size:11px;color:var(--uc-red)">Excluir</button></div></td></tr>
+            <tr><td><strong>Maria Luiza S.</strong></td><td>—</td><td><span class="pill green">Idoso</span></td><td><span class="pill green">Ativo</span></td><td>Smartwatch</td><td><div style="display:flex;gap:4px"><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Editar</button><button class="btn-ghost" onclick="confirmDelete('usuário')" style="padding:3px 8px;font-size:11px;color:var(--uc-red)">Excluir</button></div></td></tr>
+            <tr><td><strong>Carlos Operador</strong></td><td>carlos@unificare.com</td><td><span class="pill blue">Back Office</span></td><td><span class="pill green">Ativo</span></td><td>Hoje 13:00</td><td><div style="display:flex;gap:4px"><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Editar</button><button class="btn-ghost" onclick="confirmDelete('usuário')" style="padding:3px 8px;font-size:11px;color:var(--uc-red)">Excluir</button></div></td></tr>
           </tbody>
         </table>
       </div>
@@ -955,7 +955,10 @@
 
     <!-- ═══ CONFIGURAÇÕES ═══ -->
     <div class="page" id="page-config">
-      <div class="section-header"><div><div class="section-title">Configurações</div><div class="section-sub">Parâmetros do sistema UnifiCare</div></div></div>
+      <div class="section-header">
+        <div><div class="section-title">Configurações</div><div class="section-sub">Parâmetros do sistema UnifiCare</div></div>
+        <button class="btn-ghost" onclick="openModal('edit-config')">Editar Parâmetros</button>
+      </div>
       <div class="grid2">
         <div class="card">
           <div class="card-title">Alertas e Limiares</div>
@@ -1050,6 +1053,13 @@
     <div class="modal-body">
       <div style="margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--uc-border);color:var(--uc-teal);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:1px">1. Dados Pessoais</div>
       <div class="form-grid">
+        <div class="form-group full" style="display:flex; align-items:center; gap:15px; margin-bottom:10px">
+          <div style="width:70px; height:70px; border-radius:50%; background:var(--uc-surface); border:2px dashed var(--uc-border); display:flex; align-items:center; justify-content:center; font-size:24px; color:var(--uc-muted)">👤</div>
+          <div>
+            <label class="form-label">Foto do Paciente</label>
+            <input type="file" class="form-control" style="padding:5px">
+          </div>
+        </div>
         <div class="form-group full">
           <label class="form-label">Nome Completo</label>
           <input type="text" class="form-control" placeholder="Ex: Maria Luiza Santos">
@@ -1464,6 +1474,436 @@
   </div>
 </div>
 
+<!-- MODAL NOVO MEDICAMENTO (CATÁLOGO) -->
+<div class="modal-overlay" id="modal-new-medication">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-header">
+      <div class="modal-title">Cadastrar Medicamento no Catálogo</div>
+      <button class="modal-close" onclick="closeModal('new-medication')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label class="form-label">Nome Comercial</label>
+          <input type="text" class="form-control" placeholder="Ex: Glifage XR">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Princípio Ativo</label>
+          <input type="text" class="form-control" placeholder="Ex: Cloridrato de Metformina">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Dosagem Padrão</label>
+          <input type="text" class="form-control" placeholder="Ex: 500mg">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Forma Farmacêutica</label>
+          <select class="form-control">
+            <option>Comprimido</option>
+            <option>Cápsula</option>
+            <option>Gotas (Oral)</option>
+            <option>Solução Injetável</option>
+            <option>Pomada / Creme</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Classe Terapêutica</label>
+          <input type="text" class="form-control" placeholder="Ex: Antidiabético">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('new-medication')">Cancelar</button>
+      <button class="btn" onclick="saveNewMedication()" style="background:var(--uc-teal);color:#fff;border:none;padding:8px 20px">Salvar no Catálogo</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NOVO AGENDAMENTO -->
+<div class="modal-overlay" id="modal-new-appointment">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-header">
+      <div class="modal-title">Novo Agendamento</div>
+      <button class="modal-close" onclick="closeModal('new-appointment')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label class="form-label">Paciente</label>
+          <select class="form-control">
+            <option>Maria Luiza Santos</option>
+            <option>José Almeida R.</option>
+            <option>Antônio Ribeiro</option>
+            <option>Clara Meireles F.</option>
+            <option>Beatriz Nogueira</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Data</label>
+          <input type="date" class="form-control">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Horário</label>
+          <input type="time" class="form-control">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tipo</label>
+          <select class="form-control">
+            <option>Consulta Médica</option>
+            <option>Exame Laboratorial</option>
+            <option>Exame de Imagem</option>
+            <option>Fisioterapia / Reabilitação</option>
+            <option>Teleconsulta</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Local / Profissional</label>
+          <input type="text" class="form-control" placeholder="Ex: Dr. Ricardo Mendes">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Preparo / Observações</label>
+          <textarea class="form-control" rows="3" placeholder="Ex: Jejum de 8h. Levar exames anteriores."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('new-appointment')">Cancelar</button>
+      <button class="btn" onclick="saveAppointment()" style="background:var(--uc-teal);color:#fff;border:none;padding:8px 20px">Confirmar Agendamento</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL UPLOAD DE EXAME -->
+<div class="modal-overlay" id="modal-upload-exam">
+  <div class="modal" style="max-width:550px">
+    <div class="modal-header">
+      <div class="modal-title">Upload de Novo Exame</div>
+      <button class="modal-close" onclick="closeModal('upload-exam')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label class="form-label">Paciente</label>
+          <select class="form-control">
+            <option>Maria Luiza Santos</option>
+            <option>José Almeida R.</option>
+            <option>Antônio Ribeiro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tipo de Exame</label>
+          <input type="text" class="form-control" placeholder="Ex: Hemograma Completo">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Data da Realização</label>
+          <input type="date" class="form-control">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Anexar Documento / Foto</label>
+          <div style="border:2px dashed var(--uc-border);border-radius:10px;padding:30px;text-align:center;cursor:pointer;background:var(--uc-surface)">
+            <div style="font-size:24px;margin-bottom:8px">📂</div>
+            <div style="font-size:13px;font-weight:600">Arraste os arquivos aqui</div>
+            <div style="font-size:11px;color:var(--uc-muted)">PDF, JPG, PNG ou DICOM</div>
+          </div>
+        </div>
+        <div style="grid-column: span 2; background:var(--uc-teal-dim); border:1px solid var(--uc-teal-mid); border-radius:8px; padding:12px; display:flex; gap:10px; margin-top:10px">
+          <span style="font-size:16px">🤖</span>
+          <div style="font-size:11px; color:var(--uc-teal); line-height:1.4">
+            <strong>Processamento IA:</strong> Nosso motor de OCR analisará o laudo para identificar valores fora da referência e atualizar as tendências automaticamente.
+          </div>
+        </div>
+        <div class="form-group full" style="margin-top:10px">
+          <label class="form-label">Observações Clínicas</label>
+          <textarea class="form-control" rows="2" placeholder="Ex: Paciente relatou tontura no momento da coleta."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('upload-exam')">Cancelar</button>
+      <button class="btn" onclick="saveExam()" style="background:var(--uc-teal);color:#fff;border:none;padding:8px 20px">Salvar Exame</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NOVO CONTRATO / FAMÍLIA -->
+<div class="modal-overlay" id="modal-new-family">
+  <div class="modal" style="max-width:550px">
+    <div class="modal-header">
+      <div class="modal-title">Novo Cadastro de Família e Paciente</div>
+      <button class="modal-close" onclick="closeModal('new-family')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div style="grid-column: span 2; display:flex; align-items:center; gap:15px; margin-bottom:10px">
+          <div style="width:60px; height:60px; border-radius:50%; background:var(--uc-surface); border:2px dashed var(--uc-border); display:flex; align-items:center; justify-content:center; font-size:20px; color:var(--uc-muted)">👤</div>
+          <div>
+            <label class="form-label">Foto do Responsável</label>
+            <input type="file" class="form-control" style="padding:5px">
+          </div>
+        </div>
+        <div style="grid-column: span 2; font-size:11px; font-weight:700; color:var(--uc-teal); margin-bottom:-10px; text-transform:uppercase">Dados do Responsável</div>
+        <div class="form-group">
+          <label class="form-label">Nome Completo</label>
+          <input type="text" class="form-control" placeholder="Ex: Ana Paula Santos">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Parentesco</label>
+          <select class="form-control">
+            <option>Filho(a)</option>
+            <option>Cônjuge</option>
+            <option>Neto(a)</option>
+            <option>Irmão/Irmã</option>
+            <option>Outro</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">WhatsApp</label>
+          <input type="text" class="form-control" placeholder="(00) 00000-0000">
+        </div>
+        <div class="form-group">
+          <label class="form-label">E-mail</label>
+          <input type="email" class="form-control" placeholder="ana@email.com">
+        </div>
+
+        <div style="grid-column: span 2; font-size:11px; font-weight:700; color:var(--uc-teal); margin:10px 0 -10px 0; text-transform:uppercase">Dados do Idoso (Paciente)</div>
+        <div class="form-group">
+          <label class="form-label">Nome do Idoso</label>
+          <input type="text" class="form-control" placeholder="Ex: Maria Luiza Santos">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Data de Nascimento</label>
+          <input type="date" class="form-control">
+        </div>
+
+        <div style="grid-column: span 2; font-size:11px; font-weight:700; color:var(--uc-teal); margin:10px 0 -10px 0; text-transform:uppercase">Configuração do Plano</div>
+        <div class="form-group">
+          <label class="form-label">Plano UnifiCare</label>
+          <select class="form-control">
+            <option>Essencial (R$ 899/mês)</option>
+            <option>Padrão (R$ 1.099/mês)</option>
+            <option>Premium (R$ 1.249/mês)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Forma de Pagamento</label>
+          <select class="form-control">
+            <option>Cartão de Crédito (Recorrência)</option>
+            <option>Boleto Bancário</option>
+            <option>PIX</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('new-family')">Cancelar</button>
+      <button class="btn" onclick="saveNewFamily()" style="background:var(--uc-teal);color:#fff;border:none;padding:8px 20px">Finalizar Cadastro</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL GERAR RELATÓRIO -->
+<div class="modal-overlay" id="modal-generate-report">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-header">
+      <div class="modal-title">Gerar Relatório Síntese.IA</div>
+      <button class="modal-close" onclick="closeModal('generate-report')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Paciente</label>
+        <select class="form-control">
+          <option>Todos os pacientes da base</option>
+          <option>Maria Luiza Santos</option>
+          <option>José Almeida R.</option>
+          <option>Clara Meireles F.</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="margin-top:16px">
+        <label class="form-label">Tipo de Relatório (Foco)</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          <div style="background:var(--uc-surface); border:1px solid var(--uc-border); border-radius:8px; padding:10px; cursor:pointer">
+            <input type="radio" name="rptype" id="rp1" checked>
+            <label for="rp1" style="font-size:12px; font-weight:600; margin-left:5px">Síntese Diária</label>
+            <div style="font-size:10px; color:var(--uc-muted); margin-left:22px">Resumo de humor, sono e medicamentos.</div>
+          </div>
+          <div style="background:var(--uc-surface); border:1px solid var(--uc-border); border-radius:8px; padding:10px; cursor:pointer">
+            <input type="radio" name="rptype" id="rp2">
+            <label for="rp2" style="font-size:12px; font-weight:600; margin-left:5px">Eventos Clínicos</label>
+            <div style="font-size:10px; color:var(--uc-muted); margin-left:22px">Foco em alertas e sinais vitais.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top:16px">
+        <label class="form-label">Canal de Entrega</label>
+        <div style="display:flex; gap:10px">
+          <label style="display:flex; align-items:center; gap:5px; font-size:12px"><input type="checkbox" checked> WhatsApp Família</label>
+          <label style="display:flex; align-items:center; gap:5px; font-size:12px"><input type="checkbox"> E-mail Médico</label>
+          <label style="display:flex; align-items:center; gap:5px; font-size:12px"><input type="checkbox"> Download PDF</label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('generate-report')">Cancelar</button>
+      <button class="btn" onclick="runReportGeneration()" style="background:var(--uc-teal); color:#fff; border:none; padding:8px 20px">Gerar e Enviar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NOVO USUÁRIO -->
+<div class="modal-overlay" id="modal-new-user">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-header">
+      <div class="modal-title">Novo Usuário do Sistema</div>
+      <button class="modal-close" onclick="closeModal('new-user')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full" style="display:flex; align-items:center; gap:15px; margin-bottom:10px">
+          <div style="width:70px; height:70px; border-radius:50%; background:var(--uc-surface); border:2px dashed var(--uc-border); display:flex; align-items:center; justify-content:center; font-size:24px; color:var(--uc-muted)">👤</div>
+          <div>
+            <label class="form-label">Foto de Perfil</label>
+            <input type="file" class="form-control" style="padding:5px">
+          </div>
+        </div>
+        <div class="form-group full">
+          <label class="form-label">Nome Completo</label>
+          <input type="text" class="form-control" placeholder="Ex: João da Silva">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">E-mail (Login)</label>
+          <input type="email" class="form-control" placeholder="joao@unificare.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Perfil de Acesso</label>
+          <select class="form-control">
+            <option>Admin Master</option>
+            <option>Back Office (Operador)</option>
+            <option>Médico (Clínico)</option>
+            <option>Família (Responsável)</option>
+            <option>Idoso (Acesso App)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Status Inicial</label>
+          <select class="form-control">
+            <option>Ativo</option>
+            <option>Aguardando Confirmação</option>
+            <option>Bloqueado</option>
+          </select>
+        </div>
+        <div class="form-group full" style="margin-top:10px">
+          <label class="form-label">Permissões Adicionais</label>
+          <div style="display:flex; flex-direction:column; gap:8px; margin-top:5px">
+            <label style="display:flex; align-items:center; gap:8px; font-size:12px"><input type="checkbox"> Gerar relatórios financeiros</label>
+            <label style="display:flex; align-items:center; gap:8px; font-size:12px"><input type="checkbox"> Acesso total a logs de auditoria</label>
+            <label style="display:flex; align-items:center; gap:8px; font-size:12px"><input type="checkbox"> Gerenciar outros administradores</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('new-user')">Cancelar</button>
+      <button class="btn" onclick="saveNewUser()" style="background:var(--uc-teal); color:#fff; border:none; padding:8px 20px">Cadastrar Usuário</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL EDITAR CONFIGURAÇÕES -->
+<div class="modal-overlay" id="modal-edit-config">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-header">
+      <div class="modal-title">Ajustar Limiares e Parâmetros</div>
+      <button class="modal-close" onclick="closeModal('edit-config')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div style="grid-column: span 2; font-size:11px; font-weight:700; color:var(--uc-red); margin-bottom:-10px; text-transform:uppercase">Limiares de Alerta Crítico</div>
+        <div class="form-group">
+          <label class="form-label">SpO2 Mínimo (%)</label>
+          <input type="number" class="form-control" value="92">
+        </div>
+        <div class="form-group">
+          <label class="form-label">FC Máxima (bpm)</label>
+          <input type="number" class="form-control" value="100">
+        </div>
+        
+        <div style="grid-column: span 2; font-size:11px; font-weight:700; color:var(--uc-yellow); margin:10px 0 -10px 0; text-transform:uppercase">Avisos e Prevenção</div>
+        <div class="form-group">
+          <label class="form-label">Temperatura (°C)</label>
+          <input type="number" step="0.1" class="form-control" value="37.5">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Timeout Check-in (min)</label>
+          <input type="number" class="form-control" value="120">
+        </div>
+
+        <div style="grid-column: span 2; font-size:11px; font-weight:700; color:var(--uc-teal); margin:10px 0 -10px 0; text-transform:uppercase">IA e Automação</div>
+        <div class="form-group full">
+          <label style="display:flex; align-items:center; gap:10px; font-size:13px; cursor:pointer">
+            <input type="checkbox" checked style="width:18px; height:18px">
+            Ativar Reconhecimento de Voz IA para anomalias
+          </label>
+        </div>
+        <div class="form-group full">
+          <label style="display:flex; align-items:center; gap:10px; font-size:13px; cursor:pointer">
+            <input type="checkbox" checked style="width:18px; height:18px">
+            Notificar familiar automaticamente em quedas detectadas
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('edit-config')">Cancelar</button>
+      <button class="btn" onclick="saveConfig()" style="background:var(--uc-teal); color:#fff; border:none; padding:8px 20px">Aplicar Mudanças</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL MEU PERFIL -->
+<div class="modal-overlay" id="modal-my-profile">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-header">
+      <div class="modal-title">Meu Perfil</div>
+      <button class="modal-close" onclick="closeModal('my-profile')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div style="text-align:center; margin-bottom:25px">
+        <div style="width:100px; height:100px; border-radius:50%; background:var(--uc-teal); color:#fff; display:flex; align-items:center; justify-content:center; font-size:36px; font-weight:600; margin:0 auto 15px; border:4px solid var(--uc-surface); box-shadow:0 4px 10px rgba(0,0,0,0.1)">FC</div>
+        <button class="btn-ghost" style="font-size:11px">Alterar Foto</button>
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group full">
+          <label class="form-label">Nome Completo</label>
+          <input type="text" class="form-control" value="Fabricio C.">
+        </div>
+        <div class="form-group full">
+          <label class="form-label">E-mail</label>
+          <input type="email" class="form-control" value="fabricio@unificare.com">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cargo / Perfil</label>
+          <input type="text" class="form-control" value="Admin Master" disabled>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Telefone</label>
+          <input type="text" class="form-control" value="(34) 9 9999-0000">
+        </div>
+        <div style="grid-column: span 2" class="separator"></div>
+        <div class="form-group full">
+          <label class="form-label">Nova Senha (deixe em branco para manter)</label>
+          <input type="password" class="form-control" placeholder="********">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('my-profile')">Cancelar</button>
+      <button class="btn" onclick="saveProfile()" style="background:var(--uc-teal); color:#fff; border:none; padding:8px 20px">Salvar Alterações</button>
+    </div>
+  </div>
+</div>
+
 <script>
   function navTo(page) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1563,6 +2003,46 @@
   function saveRecipe() {
     alert('Receita importada e posologia configurada!');
     closeModal('import-recipe');
+  }
+
+  function saveNewMedication() {
+    alert('Medicamento adicionado ao catálogo do sistema!');
+    closeModal('new-medication');
+  }
+
+  function saveAppointment() {
+    alert('Agendamento realizado com sucesso! O familiar será notificado.');
+    closeModal('new-appointment');
+  }
+
+  function saveExam() {
+    alert('Exame enviado para processamento IA! O laudo será anexado à ficha do paciente em instantes.');
+    closeModal('upload-exam');
+  }
+
+  function saveNewFamily() {
+    alert('Cadastro realizado! O login do familiar e do idoso foi enviado via WhatsApp.');
+    closeModal('new-family');
+  }
+
+  function runReportGeneration() {
+    alert('Síntese.IA está processando os dados... Os relatórios serão enviados em instantes via canal selecionado.');
+    closeModal('generate-report');
+  }
+
+  function saveNewUser() {
+    alert('Novo usuário cadastrado! Instruções de primeiro acesso enviadas para o e-mail informado.');
+    closeModal('new-user');
+  }
+
+  function saveProfile() {
+    alert('Seu perfil foi atualizado com sucesso!');
+    closeModal('my-profile');
+  }
+
+  function saveConfig() {
+    alert('Configurações atualizadas com sucesso! Os novos limiares já estão ativos em toda a rede de monitoramento.');
+    closeModal('edit-config');
   }
 
   function startManualSession() {
