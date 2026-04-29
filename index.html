@@ -13,6 +13,15 @@
     --uc-text:#E8EEF8;--uc-muted:#6B7FA3;--uc-hint:#3D506E;
     --f:'DM Sans',sans-serif;--fm:'DM Mono',monospace;
   }
+  body.light-mode{
+    --uc-bg:#F4F7FA;--uc-surface:#FFFFFF;--uc-card:#FFFFFF;--uc-border:#E2E8F0;
+    --uc-text:#1A3A5C;--uc-muted:#64748B;--uc-hint:#94A3B8;
+    --uc-teal-dim:#4CAF5015;--uc-teal-mid:#4CAF5025;
+    --uc-blue-dim:#2C5F8A10;
+    --uc-red-dim:#FF4D6A10;
+    --uc-yellow-dim:#F5C84215;
+    --uc-green-dim:#4CAF5015;
+  }
   body{background:var(--uc-bg);color:var(--uc-text);font-family:var(--f);font-size:14px;min-height:100vh}
 
   /* LAYOUT */
@@ -210,7 +219,7 @@
   <div class="topbar">
     <div class="logo">
       <img src="assets/logo.png" alt="UnifiCare" style="width:28px;height:28px">
-      <span style="color:#4CAF50">Unifi</span><span style="color:#E8EEF8">Care</span>
+      <span style="color:var(--uc-teal)">Unifi</span><span style="color:var(--uc-text)">Care</span>
     </div>
     <div style="width:1px;height:20px;background:var(--uc-border);margin:0 8px"></div>
     <div style="font-size:12px;color:var(--uc-muted)">Central de Monitoramento</div>
@@ -223,6 +232,7 @@
         <option value="medico">Médico</option>
         <option value="familia">Família</option>
       </select>
+      <button onclick="toggleTheme()" class="btn-ghost" id="theme-btn" style="border-radius:50%;width:32px;height:32px;padding:0;display:flex;align-items:center;justify-content:center;font-size:14px">🌙</button>
       <div class="avatar">FC</div>
     </div>
   </div>
@@ -432,7 +442,7 @@
         <div><div class="section-title">Monitor.IA</div><div class="section-sub">Vigilância contínua — 12 pacientes ativos</div></div>
         <div style="display:flex;gap:8px">
           <button class="btn-ghost" onclick="openModal('filter')">Filtrar</button>
-          <button class="btn" onclick="openModal('patient')">+ Adicionar</button>
+          <button class="btn" onclick="openModal('add-monitor')">+ Adicionar</button>
         </div>
       </div>
       <div class="patient-grid">
@@ -1173,6 +1183,77 @@
   </div>
 </div>
 
+<!-- MODAL ADICIONAR AO MONITORAMENTO -->
+<div class="modal-overlay" id="modal-add-monitor">
+  <div class="modal" style="max-width:500px">
+    <div class="modal-header">
+      <div class="modal-title">Ativar Monitoramento</div>
+      <button class="modal-close" onclick="closeModal('add-monitor')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Buscar Paciente Cadastrado</label>
+        <div style="position:relative">
+          <input type="text" class="form-control" placeholder="Digite o nome ou CPF..." style="padding-left:35px">
+          <span style="position:absolute;left:12px;top:9px;color:var(--uc-muted)">🔍</span>
+        </div>
+      </div>
+
+      <div style="margin-top:16px;background:var(--uc-surface);border:1px solid var(--uc-border);border-radius:8px;max-height:180px;overflow-y:auto">
+        <div style="padding:10px;border-bottom:1px solid var(--uc-border);display:flex;align-items:center;gap:10px;cursor:pointer">
+          <input type="radio" name="pt-select" id="pt1">
+          <label for="pt1" style="flex:1;font-size:13px;cursor:pointer">
+            <div style="font-weight:600">Beatriz Nogueira</div>
+            <div style="font-size:11px;color:var(--uc-muted)">CPF: 123.***.***-00 · 72 anos</div>
+          </label>
+          <span class="pill blue">Particular</span>
+        </div>
+        <div style="padding:10px;border-bottom:1px solid var(--uc-border);display:flex;align-items:center;gap:10px;cursor:pointer">
+          <input type="radio" name="pt-select" id="pt2">
+          <label for="pt2" style="flex:1;font-size:13px;cursor:pointer">
+            <div style="font-weight:600">Darci Ferreira M.</div>
+            <div style="font-size:11px;color:var(--uc-muted)">CPF: 456.***.***-11 · 89 anos</div>
+          </label>
+          <span class="pill green">Unimed</span>
+        </div>
+        <div style="padding:10px;display:flex;align-items:center;gap:10px;cursor:pointer">
+          <input type="radio" name="pt-select" id="pt3">
+          <label for="pt3" style="flex:1;font-size:13px;cursor:pointer">
+            <div style="font-weight:600">Eduardo Gomes</div>
+            <div style="font-size:11px;color:var(--uc-muted)">CPF: 789.***.***-22 · 80 anos</div>
+          </label>
+          <span class="pill yellow">Bradesco</span>
+        </div>
+      </div>
+
+      <div class="form-grid" style="margin-top:20px">
+        <div class="form-group">
+          <label class="form-label">Prioridade</label>
+          <select class="form-control">
+            <option>Média (Padrão)</option>
+            <option>Alta (Crítico)</option>
+            <option>Baixa (Acompanhamento)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Intervalo Smartwatch</label>
+          <select class="form-control">
+            <option>5 em 5 min</option>
+            <option>15 em 15 min</option>
+            <option>30 em 30 min</option>
+            <option>Contínuo (Gasto alto)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div style="margin-right:auto;font-size:11px;color:var(--uc-muted)">Não encontrou? <a href="#" onclick="closeModal('add-monitor'); openModal('patient'); return false;" style="color:var(--uc-teal)">Cadastrar novo</a></div>
+      <button class="btn-ghost" onclick="closeModal('add-monitor')">Cancelar</button>
+      <button class="btn" onclick="activateMonitor()" style="background:var(--uc-teal);color:#fff;border:none;padding:8px 20px">Ativar</button>
+    </div>
+  </div>
+</div>
+
 <script>
   function navTo(page) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1238,6 +1319,18 @@
   function applyFilters() {
     alert('Filtros aplicados à visualização do Monitor.IA');
     closeModal('filter');
+  }
+
+  function activateMonitor() {
+    alert('Monitoramento ativado para o paciente selecionado');
+    closeModal('add-monitor');
+  }
+
+  function toggleTheme() {
+    const b = document.body;
+    b.classList.toggle('light-mode');
+    const isLight = b.classList.contains('light-mode');
+    document.getElementById('theme-btn').textContent = isLight ? '☀️' : '🌙';
   }
 
   function tick() {
