@@ -46,7 +46,9 @@
   .nav-item:hover{background:var(--uc-card);color:var(--uc-text)}
   .nav-item.active{background:var(--uc-teal-dim);color:var(--uc-teal);font-weight:500}
   .nav-item.active::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:3px;height:60%;background:var(--uc-teal);border-radius:0 2px 2px 0}
-  .nav-icon{font-size:16px;width:20px;text-align:center}
+  .nav-icon{display:flex;align-items:center;justify-content:center;width:20px}
+  .nav-item.active .nav-icon{color:var(--uc-teal)}
+  .nav-icon svg{width:18px;height:18px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
   .nav-badge{margin-left:auto;background:var(--uc-red);color:#fff;border-radius:10px;padding:1px 7px;font-size:10px;font-weight:600}
   .nav-badge.yellow{background:var(--uc-yellow);color:#1A1000}
   .sidebar-bottom{margin-top:auto;padding:16px;border-top:1px solid var(--uc-border)}
@@ -241,51 +243,51 @@
   <div class="sidebar">
     <div style="padding:8px 16px 4px;font-size:11px;color:var(--uc-muted)">OPERACIONAL</div>
     <div class="nav-item active" onclick="navTo('dashboard')" id="nav-dashboard">
-      <span class="nav-icon">◉</span> Dashboard
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg></span> Dashboard
     </div>
     <div class="nav-item" onclick="navTo('monitor')" id="nav-monitor">
-      <span class="nav-icon">◎</span> Monitor.IA
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg></span> Monitor.IA
       <span class="nav-badge yellow">3</span>
     </div>
     <div class="nav-item" onclick="navTo('urgent')" id="nav-urgent">
-      <span class="nav-icon">◈</span> Urgent.IA
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="m13 2-2 10h8l-2 10"></path></svg></span> Urgent.IA
       <span class="nav-badge">2</span>
     </div>
     <div class="nav-item" onclick="navTo('concilia')" id="nav-concilia">
-      <span class="nav-icon">◇</span> Concil.IA
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></span> Concil.IA
     </div>
     <div class="nav-item" onclick="navTo('checkin')" id="nav-checkin">
-      <span class="nav-icon">◻</span> Check-ins
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg></span> Check-ins
     </div>
     <div class="nav-section">Clínico</div>
     <div class="nav-item" onclick="navTo('prontuario')" id="nav-prontuario">
-      <span class="nav-icon">📋</span> Prontuário
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span> Prontuário
     </div>
     <div class="nav-item" onclick="navTo('medicamentos')" id="nav-medicamentos">
-      <span class="nav-icon">💊</span> Medicamentos
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"></path><path d="m8.5 8.5 7 7"></path></svg></span> Medicamentos
     </div>
     <div class="nav-item" onclick="navTo('agendamentos')" id="nav-agendamentos">
-      <span class="nav-icon">📅</span> Agendamentos
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg></span> Agendamentos
     </div>
     <div class="nav-item" onclick="navTo('exames')" id="nav-exames">
-      <span class="nav-icon">🔬</span> Exames
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 3.38-2 3.38s2.25-.89 4-2.42"></path><path d="m15 15-6 6"></path><path d="m19.8 8.5 2.9-2.9"></path><path d="M18 11.5V10l.5-.5"></path><path d="M11 20H9.5l-.5.5"></path><circle cx="15.5" cy="8.5" r="5.5"></circle></svg></span> Exames
     </div>
     <div class="nav-section">Gestão</div>
     <div class="nav-item" onclick="navTo('familia')" id="nav-familia">
-      <span class="nav-icon">◯</span> Famílias
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg></span> Famílias
     </div>
     <div class="nav-item" onclick="navTo('relatorios')" id="nav-relatorios">
-      <span class="nav-icon">≡</span> Relatórios
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg></span> Relatórios
     </div>
     <div class="nav-section">Administração</div>
     <div class="nav-item" onclick="navTo('usuarios')" id="nav-usuarios">
-      <span class="nav-icon">👥</span> Usuários
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></span> Usuários
     </div>
     <div class="nav-item" onclick="navTo('config')" id="nav-config">
-      <span class="nav-icon">⚙</span> Configurações
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1Z"></path></svg></span> Configurações
     </div>
     <div class="nav-item" onclick="navTo('admin')" id="nav-admin">
-      <span class="nav-icon">🛡</span> Painel Admin
+      <span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></span> Painel Admin
     </div>
     <div class="sidebar-bottom">
       <div class="op-card" onclick="openModal('my-profile')" style="cursor:pointer">
@@ -1904,6 +1906,25 @@
   </div>
 </div>
 
+  </div>
+</div>
+
+<!-- MODAL DE CONFIRMAÇÃO DO SISTEMA (PREMIUM) -->
+<div class="modal-overlay" id="modal-system-confirm" style="z-index: 2000">
+  <div class="modal" style="max-width:400px; text-align:center; padding:10px">
+    <div class="modal-body" style="padding:30px 20px">
+      <div id="confirm-icon" style="font-size:48px; margin-bottom:15px">⚠️</div>
+      <div id="confirm-title" style="font-size:18px; font-weight:700; margin-bottom:10px; color:var(--uc-text)">Confirmação</div>
+      <div id="confirm-message" style="font-size:14px; color:var(--uc-muted); line-height:1.5; margin-bottom:20px">Deseja prosseguir com esta ação?</div>
+      
+      <div style="display:flex; gap:12px; justify-content:center">
+        <button class="btn-ghost" id="confirm-cancel-btn" onclick="closeModal('system-confirm')" style="flex:1">Cancelar</button>
+        <button class="btn" id="confirm-ok-btn" style="flex:1; background:var(--uc-teal); color:#fff; border:none">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   function navTo(page) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1937,21 +1958,64 @@
   }
 
   function confirmResolveAlert() {
-    if(confirm('CONFIRMAR: O paciente Maria Luiza está realmente fora de perigo? Esta ação encerrará o protocolo de emergência.')) {
-      resolveAlert();
-    }
+    showSystemConfirm({
+      title: 'Finalizar Protocolo?',
+      message: 'O paciente Maria Luiza está realmente estável? Isso encerrará o monitoramento crítico.',
+      icon: '✅',
+      onConfirm: () => resolveAlert()
+    });
   }
 
   function confirmShowSamu() {
-    if(confirm('CUIDADO: Você está prestes a acionar o SAMU 192. Esta ação deve ser tomada apenas em casos de risco de vida confirmado. Confirmar?')) {
-      showSamu();
-    }
+    showSystemConfirm({
+      title: 'ACIONAR SAMU 192?',
+      message: 'Esta é uma ação de emergência real. O serviço de socorro será enviado imediatamente.',
+      icon: '🚨',
+      onConfirm: () => showSamu()
+    });
   }
 
   function confirmDelete(item) {
-    if(confirm('Tem certeza que deseja excluir este ' + item + '? Esta ação não poderá ser desfeita.')) {
-      alert('Exclusão realizada com sucesso (Simulação).');
-    }
+    showSystemConfirm({
+      title: 'Excluir ' + item + '?',
+      message: 'Esta ação é irreversível e removerá todos os dados vinculados.',
+      icon: '🗑️',
+      onConfirm: () => {
+        showSystemAlert('Sucesso', 'O ' + item + ' foi removido com sucesso.');
+      }
+    });
+  }
+
+  // SISTEMA DE DIÁLOGOS CUSTOMIZADOS
+  function showSystemConfirm({title, message, icon, onConfirm}) {
+    document.getElementById('confirm-title').textContent = title;
+    document.getElementById('confirm-message').textContent = message;
+    document.getElementById('confirm-icon').textContent = icon || '⚠️';
+    
+    const okBtn = document.getElementById('confirm-ok-btn');
+    const cancelBtn = document.getElementById('confirm-cancel-btn');
+    
+    cancelBtn.style.display = 'block';
+    okBtn.onclick = () => {
+      onConfirm();
+      closeModal('system-confirm');
+    };
+    
+    openModal('system-confirm');
+  }
+
+  function showSystemAlert(title, message, icon = '✨') {
+    document.getElementById('confirm-title').textContent = title;
+    document.getElementById('confirm-message').textContent = message;
+    document.getElementById('confirm-icon').textContent = icon;
+    
+    const okBtn = document.getElementById('confirm-ok-btn');
+    const cancelBtn = document.getElementById('confirm-cancel-btn');
+    
+    cancelBtn.style.display = 'none';
+    okBtn.onclick = () => closeModal('system-confirm');
+    
+    openModal('system-confirm');
   }
 
   function switchProfile(profile) {
@@ -1985,12 +2049,12 @@
   }
 
   function applyFilters() {
-    alert('Filtros aplicados à visualização do Monitor.IA');
+    showSystemAlert('Filtros Aplicados', 'A visualização do Monitor.IA foi atualizada.', '🔍');
     closeModal('filter');
   }
 
   function activateMonitor() {
-    alert('Monitoramento ativado para o paciente selecionado');
+    showSystemAlert('Monitoramento Ativo', 'O paciente agora está sendo acompanhado em tempo real.', '🛰️');
     closeModal('add-monitor');
   }
 
@@ -2019,52 +2083,52 @@
   }
 
   function saveRecipe() {
-    alert('Receita importada e posologia configurada!');
+    showSystemAlert('Receita Importada', 'A posologia foi configurada e enviada para o aplicativo.', '📋');
     closeModal('import-recipe');
   }
 
   function saveNewMedication() {
-    alert('Medicamento adicionado ao catálogo do sistema!');
+    showSystemAlert('Catálogo Atualizado', 'O novo fármaco já está disponível para prescrição.', '💊');
     closeModal('new-medication');
   }
 
   function saveAppointment() {
-    alert('Agendamento realizado com sucesso! O familiar será notificado.');
+    showSystemAlert('Agendamento Confirmado', 'O evento foi adicionado ao calendário e notificado.', '📅');
     closeModal('new-appointment');
   }
 
   function saveExam() {
-    alert('Exame enviado para processamento IA! O laudo será anexado à ficha do paciente em instantes.');
+    showSystemAlert('Upload Concluído', 'O exame está sendo processado pela IA.', '🔬');
     closeModal('upload-exam');
   }
 
   function saveNewFamily() {
-    alert('Cadastro realizado! O login do familiar e do idoso foi enviado via WhatsApp.');
+    showSystemAlert('Contrato Ativado', 'Credenciais enviadas via WhatsApp para a família.', '🏠');
     closeModal('new-family');
   }
 
   function runReportGeneration() {
-    alert('Síntese.IA está processando os dados... Os relatórios serão enviados em instantes via canal selecionado.');
+    showSystemAlert('Relatório em Fila', 'A síntese está sendo processada e será enviada em instantes.', '📊');
     closeModal('generate-report');
   }
 
   function saveNewUser() {
-    alert('Novo usuário cadastrado! Instruções de primeiro acesso enviadas para o e-mail informado.');
+    showSystemAlert('Usuário Criado', 'Instruções de acesso enviadas para o e-mail informado.', '👥');
     closeModal('new-user');
   }
 
   function saveProfile() {
-    alert('Seu perfil foi atualizado com sucesso!');
+    showSystemAlert('Perfil Atualizado', 'Suas alterações foram salvas com sucesso.', '👤');
     closeModal('my-profile');
   }
 
   function saveConfig() {
-    alert('Configurações atualizadas com sucesso! Os novos limiares já estão ativos em toda a rede de monitoramento.');
+    showSystemAlert('Configurações Aplicadas', 'Os novos limiares estão ativos em toda a rede.', '⚙️');
     closeModal('edit-config');
   }
 
   function startManualSession() {
-    alert('Conexão estabelecida. Abrindo interface de áudio/vídeo...');
+    showSystemAlert('Conexão Estabelecida', 'Abrindo interface de áudio e vídeo em tempo real...', '📞');
     closeModal('manual-checkin');
   }
 
