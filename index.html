@@ -827,9 +827,13 @@
       </div>
     </div>
 
-    <!-- ═══ MEDICAMENTOS ═══ -->
     <div class="page" id="page-medicamentos">
-      <div class="section-header"><div><div class="section-title">Cadastro de Medicamentos</div><div class="section-sub">Base de medicamentos do sistema</div></div><button class="btn">+ Novo Medicamento</button></div>
+      <div class="section-header"><div><div class="section-title">Medicamentos</div><div class="section-sub">Base de medicamentos e gestão de posologia</div></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn-ghost" onclick="openModal('import-recipe')">Importar Receita</button>
+          <button class="btn">+ Novo Medicamento</button>
+        </div>
+      </div>
       <div class="metrics" style="grid-template-columns:repeat(3,1fr)">
         <div class="metric ok"><div class="metric-label">Medicamentos Ativos</div><div class="metric-value">23</div><div class="metric-sub">Em uso pelos pacientes</div></div>
         <div class="metric warning"><div class="metric-label">Interações Detectadas</div><div class="metric-value">3</div><div class="metric-sub">Requerem revisão</div></div>
@@ -1328,6 +1332,81 @@
   </div>
 </div>
 
+<!-- MODAL IMPORTAR RECEITA -->
+<div class="modal-overlay" id="modal-import-recipe">
+  <div class="modal" style="max-width:550px">
+    <div class="modal-header">
+      <div class="modal-title">Importar Receita Médica</div>
+      <button class="modal-close" onclick="closeModal('import-recipe')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;background:var(--uc-surface);padding:4px;border-radius:8px;margin-bottom:20px">
+        <button id="tab-file" onclick="switchImportTab('file')" style="flex:1;border:none;background:var(--uc-teal);color:#fff;padding:8px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">Arquivo (PDF/Foto)</button>
+        <button id="tab-manual" onclick="switchImportTab('manual')" style="flex:1;border:none;background:transparent;color:var(--uc-muted);padding:8px;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer">Preenchimento Manual</button>
+      </div>
+
+      <!-- SEÇÃO ARQUIVO -->
+      <div id="import-file-section">
+        <div style="border:2px dashed var(--uc-border);border-radius:12px;padding:40px 20px;text-align:center;cursor:pointer">
+          <div style="font-size:32px;margin-bottom:12px">📄</div>
+          <div style="font-size:14px;font-weight:600;margin-bottom:4px">Clique ou arraste a receita</div>
+          <div style="font-size:11px;color:var(--uc-muted)">Suporta PDF, JPG, PNG até 10MB</div>
+        </div>
+        <div style="margin-top:16px;background:var(--uc-teal-dim);border:1px solid var(--uc-teal-mid);border-radius:8px;padding:12px;display:flex;gap:10px">
+          <span style="font-size:16px">✨</span>
+          <div style="font-size:11px;color:var(--uc-teal);line-height:1.4">
+            <strong>IA UnifiCare:</strong> Ao subir o arquivo, nossa IA extrairá automaticamente o nome, dosagem e horários para sua conferência.
+          </div>
+        </div>
+      </div>
+
+      <!-- SEÇÃO MANUAL (Hidden by default via JS) -->
+      <div id="import-manual-section" style="display:none">
+        <div class="form-grid">
+          <div class="form-group full">
+            <label class="form-label">Paciente</label>
+            <select class="form-control">
+              <option>Maria Luiza Santos</option>
+              <option>José Almeida R.</option>
+              <option>Antônio Ribeiro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Medicamento</label>
+            <input type="text" class="form-control" placeholder="Ex: Losartana">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Dosagem</label>
+            <input type="text" class="form-control" placeholder="Ex: 50mg">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Frequência</label>
+            <select class="form-control">
+              <option>1x ao dia (24h)</option>
+              <option>2x ao dia (12h)</option>
+              <option>3x ao dia (8h)</option>
+              <option>4x ao dia (6h)</option>
+              <option>Uso contínuo / Se necessário</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Duração (Dias)</label>
+            <input type="number" class="form-control" placeholder="Ex: 7">
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Instruções de Uso</label>
+            <textarea class="form-control" rows="3" placeholder="Ex: Tomar em jejum com copo de água cheio. Não mastigar."></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('import-recipe')">Cancelar</button>
+      <button class="btn" onclick="saveRecipe()" style="background:var(--uc-teal);color:#fff;border:none;padding:8px 20px">Finalizar Importação</button>
+    </div>
+  </div>
+</div>
+
 <script>
   function navTo(page) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1405,6 +1484,28 @@
     b.classList.toggle('light-mode');
     const isLight = b.classList.contains('light-mode');
     document.getElementById('theme-btn').textContent = isLight ? '☀️' : '🌙';
+  }
+
+  function switchImportTab(tab) {
+    const isFile = tab === 'file';
+    document.getElementById('import-file-section').style.display = isFile ? 'block' : 'none';
+    document.getElementById('import-manual-section').style.display = isFile ? 'none' : 'block';
+    
+    const btnFile = document.getElementById('tab-file');
+    const btnManual = document.getElementById('tab-manual');
+    
+    if(isFile) {
+      btnFile.style.background = 'var(--uc-teal)'; btnFile.style.color = '#fff';
+      btnManual.style.background = 'transparent'; btnManual.style.color = 'var(--uc-muted)';
+    } else {
+      btnManual.style.background = 'var(--uc-teal)'; btnManual.style.color = '#fff';
+      btnFile.style.background = 'transparent'; btnFile.style.color = 'var(--uc-muted)';
+    }
+  }
+
+  function saveRecipe() {
+    alert('Receita importada e posologia configurada!');
+    closeModal('import-recipe');
   }
 
   function tick() {
