@@ -209,7 +209,7 @@
   <!-- TOPBAR -->
   <div class="topbar">
     <div class="logo">
-      <img src="../assets/logo-icon.svg" alt="UnifiCare" style="width:28px;height:28px">
+      <img src="assets/logo-icon.svg" alt="UnifiCare" style="width:28px;height:28px">
       <span style="color:#4CAF50">Unifi</span><span style="color:#E8EEF8">Care</span>
     </div>
     <div style="width:1px;height:20px;background:var(--uc-border);margin:0 8px"></div>
@@ -431,7 +431,7 @@
       <div class="section-header">
         <div><div class="section-title">Monitor.IA</div><div class="section-sub">Vigilância contínua — 12 pacientes ativos</div></div>
         <div style="display:flex;gap:8px">
-          <button class="btn-ghost">Filtrar</button>
+          <button class="btn-ghost" onclick="openModal('filter')">Filtrar</button>
           <button class="btn" onclick="openModal('patient')">+ Adicionar</button>
         </div>
       </div>
@@ -1128,6 +1128,51 @@
   </div>
 </div>
 
+<!-- MODAL FILTRAR MONITOR.IA -->
+<div class="modal-overlay" id="modal-filter">
+  <div class="modal" style="max-width:450px">
+    <div class="modal-header">
+      <div class="modal-title">Filtrar Monitoramento</div>
+      <button class="modal-close" onclick="closeModal('filter')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Status de Alerta</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer"><input type="checkbox" checked> Crítico (Vermelho)</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer"><input type="checkbox" checked> Atenção (Amarelo)</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer"><input type="checkbox" checked> Estável (Verde)</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer"><input type="checkbox"> Sem Sinal</label>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top:20px">
+        <label class="form-label">Anomalias Específicas</label>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer"><input type="checkbox"> Frequência Cardíaca > 100 bpm</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer"><input type="checkbox"> SpO2 < 92%</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer"><input type="checkbox"> Bateria Smartwatch < 15%</label>
+          <label style="display:flex;align-items:center;gap:8px;font-size:12px;cursor:pointer"><input type="checkbox"> Fora do perímetro seguro (GPS)</label>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top:20px">
+        <label class="form-label">Período de Dados</label>
+        <select class="form-control">
+          <option>Última 1 hora</option>
+          <option>Últimas 4 horas</option>
+          <option>Últimas 12 horas</option>
+          <option>Hoje (desde 00:00)</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('filter')">Limpar</button>
+      <button class="btn" onclick="applyFilters()" style="background:var(--uc-teal);color:#fff;border:none;padding:8px 20px">Aplicar Filtros</button>
+    </div>
+  </div>
+</div>
+
 <script>
   function navTo(page) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1188,6 +1233,11 @@
   function savePatient() {
     alert('Paciente cadastrado com sucesso (simulação)');
     closeModal('patient');
+  }
+
+  function applyFilters() {
+    alert('Filtros aplicados à visualização do Monitor.IA');
+    closeModal('filter');
   }
 
   function tick() {
