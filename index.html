@@ -3,13 +3,13 @@
   @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
   *{box-sizing:border-box;margin:0;padding:0}
   :root{
-    --uc-bg:#0B0F1A;--uc-surface:#131929;--uc-card:#1A2236;--uc-border:#243050;
-    --uc-teal:#00C9A7;--uc-teal-dim:#00C9A720;--uc-teal-mid:#00C9A740;
-    --uc-blue:#3A8EF6;--uc-blue-dim:#3A8EF615;
+    --uc-bg:#0B1420;--uc-surface:#111D2E;--uc-card:#172638;--uc-border:#1E3450;
+    --uc-teal:#4CAF50;--uc-teal-dim:#4CAF5020;--uc-teal-mid:#4CAF5040;
+    --uc-blue:#2C5F8A;--uc-blue-dim:#2C5F8A15;
     --uc-orange:#FF7A2F;--uc-orange-dim:#FF7A2F20;
     --uc-red:#FF4D6A;--uc-red-dim:#FF4D6A20;
     --uc-yellow:#F5C842;--uc-yellow-dim:#F5C84220;
-    --uc-green:#34D399;--uc-green-dim:#34D39920;
+    --uc-green:#4CAF50;--uc-green-dim:#4CAF5020;
     --uc-text:#E8EEF8;--uc-muted:#6B7FA3;--uc-hint:#3D506E;
     --f:'DM Sans',sans-serif;--fm:'DM Mono',monospace;
   }
@@ -188,21 +188,27 @@
   <!-- TOPBAR -->
   <div class="topbar">
     <div class="logo">
-      <div class="logo-dot"></div>
-      UnifiCare
+      <img src="../assets/logo-icon.svg" alt="UnifiCare" style="width:28px;height:28px">
+      <span style="color:#4CAF50">Unifi</span><span style="color:#E8EEF8">Care</span>
     </div>
     <div style="width:1px;height:20px;background:var(--uc-border);margin:0 8px"></div>
     <div style="font-size:12px;color:var(--uc-muted)">Central de Monitoramento</div>
     <div class="topbar-right">
       <div class="alert-badge" onclick="navTo('urgent')">2 alertas ativos</div>
       <div class="time" id="clock">--:--:--</div>
+      <select id="profile-switcher" onchange="switchProfile(this.value)" style="background:var(--uc-card);color:var(--uc-text);border:1px solid var(--uc-border);border-radius:8px;padding:5px 10px;font-size:12px;font-family:var(--f);cursor:pointer">
+        <option value="admin">Admin Master</option>
+        <option value="backoffice">Back Office</option>
+        <option value="medico">Médico</option>
+        <option value="familia">Família</option>
+      </select>
       <div class="avatar">FC</div>
     </div>
   </div>
 
   <!-- SIDEBAR -->
   <div class="sidebar">
-    <div style="padding:8px 16px 4px;font-size:11px;color:var(--uc-muted)">MÓDULOS</div>
+    <div style="padding:8px 16px 4px;font-size:11px;color:var(--uc-muted)">OPERACIONAL</div>
     <div class="nav-item active" onclick="navTo('dashboard')" id="nav-dashboard">
       <span class="nav-icon">◉</span> Dashboard
     </div>
@@ -220,6 +226,19 @@
     <div class="nav-item" onclick="navTo('checkin')" id="nav-checkin">
       <span class="nav-icon">◻</span> Check-ins
     </div>
+    <div class="nav-section">Clínico</div>
+    <div class="nav-item" onclick="navTo('prontuario')" id="nav-prontuario">
+      <span class="nav-icon">📋</span> Prontuário
+    </div>
+    <div class="nav-item" onclick="navTo('medicamentos')" id="nav-medicamentos">
+      <span class="nav-icon">💊</span> Medicamentos
+    </div>
+    <div class="nav-item" onclick="navTo('agendamentos')" id="nav-agendamentos">
+      <span class="nav-icon">📅</span> Agendamentos
+    </div>
+    <div class="nav-item" onclick="navTo('exames')" id="nav-exames">
+      <span class="nav-icon">🔬</span> Exames
+    </div>
     <div class="nav-section">Gestão</div>
     <div class="nav-item" onclick="navTo('familia')" id="nav-familia">
       <span class="nav-icon">◯</span> Famílias
@@ -227,12 +246,22 @@
     <div class="nav-item" onclick="navTo('relatorios')" id="nav-relatorios">
       <span class="nav-icon">≡</span> Relatórios
     </div>
+    <div class="nav-section">Administração</div>
+    <div class="nav-item" onclick="navTo('usuarios')" id="nav-usuarios">
+      <span class="nav-icon">👥</span> Usuários
+    </div>
+    <div class="nav-item" onclick="navTo('config')" id="nav-config">
+      <span class="nav-icon">⚙</span> Configurações
+    </div>
+    <div class="nav-item" onclick="navTo('admin')" id="nav-admin">
+      <span class="nav-icon">🛡</span> Painel Admin
+    </div>
     <div class="sidebar-bottom">
       <div class="op-card">
         <div class="op-avatar">FC</div>
         <div class="op-info">
           <p>Fabricio C.</p>
-          <span>Operador</span>
+          <span id="profile-label">Admin Master</span>
         </div>
         <div class="status-dot"></div>
       </div>
@@ -488,7 +517,7 @@
             </div>
             <div class="pf-step ai">
               <div class="pf-num" style="border-color:var(--uc-green);color:var(--uc-green)">✓</div>
-              <div class="pf-text"><p>ConectaLar tentou contato de voz (3x)</p><span>14:33 — Sem resposta em 30 segundos</span></div>
+              <div class="pf-text"><p>UnifiCare tentou contato de voz (3x)</p><span>14:33 — Sem resposta em 30 segundos</span></div>
               <span class="pf-tag ai-tag">IA</span>
             </div>
             <div class="pf-step human" style="background:var(--uc-blue-dim);border-color:var(--uc-blue)">
@@ -645,7 +674,7 @@
           </div>
         </div>
         <div class="card">
-          <div class="card-title">Fluxo de Check-in — ConectaLar</div>
+          <div class="card-title">Fluxo de Check-in — UnifiCare</div>
           <div style="background:var(--uc-surface);border-radius:10px;padding:14px;font-size:12px;margin-bottom:12px">
             <div style="color:var(--uc-muted);margin-bottom:8px;font-size:11px">Transcrição — Clara Meireles · 09:00</div>
             <div style="margin-bottom:8px"><span style="color:var(--uc-teal);font-weight:500">IA:</span><span style="color:var(--uc-muted)"> "Bom dia, Clara! Como a senhora está se sentindo hoje?"</span></div>
@@ -728,6 +757,251 @@
       </div>
     </div>
 
+    <!-- ═══ PRONTUÁRIO ═══ -->
+    <div class="page" id="page-prontuario">
+      <div class="section-header"><div><div class="section-title">Prontuário Simplificado</div><div class="section-sub">Ficha clínica dos pacientes monitorados</div></div><button class="btn">+ Novo Paciente</button></div>
+      <div class="grid2">
+        <div class="card">
+          <div class="card-title">Maria Luiza Santos <span>84 anos</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+            <div class="vital"><div class="vital-label">Tipo Sanguíneo</div><div class="vital-value">A+</div></div>
+            <div class="vital"><div class="vital-label">Peso</div><div class="vital-value">62 kg</div></div>
+            <div class="vital"><div class="vital-label">Altura</div><div class="vital-value">1,58 m</div></div>
+            <div class="vital"><div class="vital-label">Plano</div><div class="vital-value" style="font-size:11px">Premium</div></div>
+          </div>
+          <div style="margin-bottom:12px"><div style="font-size:11px;color:var(--uc-muted);font-weight:600;margin-bottom:4px">CONDIÇÕES</div><div style="display:flex;gap:4px;flex-wrap:wrap"><span class="pill blue">HAS</span><span class="pill blue">Dislipidemia</span><span class="pill yellow">Arritmia</span></div></div>
+          <div style="margin-bottom:12px"><div style="font-size:11px;color:var(--uc-muted);font-weight:600;margin-bottom:4px">ALERGIAS</div><div style="display:flex;gap:4px"><span class="pill red">Dipirona</span><span class="pill red">Ibuprofeno</span></div></div>
+          <div><div style="font-size:11px;color:var(--uc-muted);font-weight:600;margin-bottom:4px">MÉDICO RESPONSÁVEL</div><div style="font-size:12px">Dr. Ricardo Mendes — CRM 12345/MG — Cardiologista</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Histórico de Alertas</div>
+          <div class="timeline">
+            <div class="tl-item"><div class="tl-dot alert">!</div><div class="tl-content"><p>SpO2 91% — Sem resposta check-in</p><span>22/04/2026 · 14:32</span></div></div>
+            <div class="tl-item"><div class="tl-dot" style="border-color:var(--uc-yellow);color:var(--uc-yellow)">△</div><div class="tl-content"><p>Temperatura 38.1°C por 2h</p><span>18/04/2026 · 10:15</span></div></div>
+            <div class="tl-item"><div class="tl-dot done">✓</div><div class="tl-content"><p>Check-in normal — humor positivo</p><span>17/04/2026 · 09:00</span></div></div>
+            <div class="tl-item"><div class="tl-dot done">✓</div><div class="tl-content"><p>Consulta cardiologista — sem alterações</p><span>10/04/2026 · 14:00</span></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div class="card-title">Outros Pacientes</div>
+        <table class="med-table">
+          <thead><tr><th>Paciente</th><th>Idade</th><th>Condições</th><th>Alergias</th><th>Médico</th><th>Ficha</th></tr></thead>
+          <tbody>
+            <tr><td><strong>José Almeida R.</strong></td><td>78</td><td><span class="pill blue">HAS</span> <span class="pill blue">DM2</span></td><td><span class="pill red">AAS</span></td><td>Dra. Ana Costa</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Abrir</button></td></tr>
+            <tr><td><strong>Clara Meireles F.</strong></td><td>81</td><td><span class="pill blue">Osteoporose</span></td><td>Nenhuma</td><td>Dr. Ricardo Mendes</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Abrir</button></td></tr>
+            <tr><td><strong>Antônio Ribeiro</strong></td><td>86</td><td><span class="pill blue">DPOC</span> <span class="pill blue">HAS</span></td><td><span class="pill red">Penicilina</span></td><td>Dr. Marcos Lima</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Abrir</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══ MEDICAMENTOS ═══ -->
+    <div class="page" id="page-medicamentos">
+      <div class="section-header"><div><div class="section-title">Cadastro de Medicamentos</div><div class="section-sub">Base de medicamentos do sistema</div></div><button class="btn">+ Novo Medicamento</button></div>
+      <div class="metrics" style="grid-template-columns:repeat(3,1fr)">
+        <div class="metric ok"><div class="metric-label">Medicamentos Ativos</div><div class="metric-value">23</div><div class="metric-sub">Em uso pelos pacientes</div></div>
+        <div class="metric warning"><div class="metric-label">Interações Detectadas</div><div class="metric-value">3</div><div class="metric-sub">Requerem revisão</div></div>
+        <div class="metric info"><div class="metric-label">Receitas Importadas</div><div class="metric-value">8</div><div class="metric-sub">Este mês</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Medicamentos Cadastrados</div>
+        <table class="med-table">
+          <thead><tr><th>Medicamento</th><th>Princípio Ativo</th><th>Dosagem</th><th>Forma</th><th>Pacientes</th><th>Ações</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Metoprolol</strong></td><td>Succinato de metoprolol</td><td>25mg / 50mg</td><td>Comprimido</td><td>3</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Editar</button></td></tr>
+            <tr><td><strong>Losartana</strong></td><td>Losartana potássica</td><td>50mg / 100mg</td><td>Comprimido</td><td>4</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Editar</button></td></tr>
+            <tr><td><strong>AAS</strong></td><td>Ácido acetilsalicílico</td><td>100mg</td><td>Comprimido</td><td>2</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Editar</button></td></tr>
+            <tr><td><strong>Atorvastatina</strong></td><td>Atorvastatina cálcica</td><td>10mg / 20mg</td><td>Comprimido</td><td>3</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Editar</button></td></tr>
+            <tr><td><strong>Omeprazol</strong></td><td>Omeprazol</td><td>20mg</td><td>Cápsula</td><td>5</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Editar</button></td></tr>
+            <tr><td><strong>Hidroclorotiazida</strong></td><td>Hidroclorotiazida</td><td>25mg</td><td>Comprimido</td><td>2</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Editar</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div class="card-title">Interações Detectadas <span style="background:var(--uc-red-dim);color:var(--uc-red);border-color:var(--uc-red)">atenção</span></div>
+        <div class="alert-list">
+          <div class="alert-item"><span class="alert-icon">⚡</span><div class="alert-body"><p>Metoprolol + AAS — Maria Luiza</p><span>Risco de redução do efeito anti-hipertensivo. Monitorar PA.</span></div><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Revisar</button></div>
+          <div class="alert-item warn"><span class="alert-icon">△</span><div class="alert-body"><p>Losartana + Cálcio — Clara Meireles</p><span>Possível redução da absorção. Separar horários em 2h.</span></div><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Revisar</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ AGENDAMENTOS ═══ -->
+    <div class="page" id="page-agendamentos">
+      <div class="section-header"><div><div class="section-title">Agendamentos</div><div class="section-sub">Consultas e exames programados</div></div><button class="btn">+ Novo Agendamento</button></div>
+      <div class="metrics" style="grid-template-columns:repeat(4,1fr)">
+        <div class="metric ok"><div class="metric-label">Hoje</div><div class="metric-value">3</div><div class="metric-sub">Consultas/exames</div></div>
+        <div class="metric info"><div class="metric-label">Esta Semana</div><div class="metric-value">8</div><div class="metric-sub">Programados</div></div>
+        <div class="metric warning"><div class="metric-label">Pendentes</div><div class="metric-value">2</div><div class="metric-sub">Sem confirmação</div></div>
+        <div class="metric"><div class="metric-label">Realizados (mês)</div><div class="metric-value" style="color:var(--uc-teal)">14</div><div class="metric-sub">de 18 previstos</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Próximos Agendamentos</div>
+        <table class="med-table">
+          <thead><tr><th>Data</th><th>Horário</th><th>Paciente</th><th>Tipo</th><th>Profissional</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>22/04</td><td>15:00</td><td><strong>Maria Luiza S.</strong></td><td><span class="pill blue">Consulta</span></td><td>Dr. Ricardo Mendes</td><td><span class="pill green">Confirmado</span></td></tr>
+            <tr><td>23/04</td><td>09:30</td><td><strong>José Almeida R.</strong></td><td><span class="pill yellow">Exame</span></td><td>Lab São Lucas</td><td><span class="pill yellow">Pendente</span></td></tr>
+            <tr><td>23/04</td><td>14:00</td><td><strong>Clara Meireles F.</strong></td><td><span class="pill blue">Consulta</span></td><td>Dra. Ana Costa</td><td><span class="pill green">Confirmado</span></td></tr>
+            <tr><td>25/04</td><td>10:00</td><td><strong>Antônio Ribeiro</strong></td><td><span class="pill yellow">Exame</span></td><td>Lab São Lucas</td><td><span class="pill yellow">Pendente</span></td></tr>
+            <tr><td>28/04</td><td>11:00</td><td><strong>Beatriz Nogueira</strong></td><td><span class="pill blue">Consulta</span></td><td>Dr. Marcos Lima</td><td><span class="pill green">Confirmado</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══ EXAMES ═══ -->
+    <div class="page" id="page-exames">
+      <div class="section-header"><div><div class="section-title">Exames</div><div class="section-sub">Resultados e laudos — upload por arquivo, formulário ou foto</div></div><button class="btn">+ Upload de Exame</button></div>
+      <div class="metrics" style="grid-template-columns:repeat(3,1fr)">
+        <div class="metric ok"><div class="metric-label">Exames Registrados</div><div class="metric-value">32</div><div class="metric-sub">Total na base</div></div>
+        <div class="metric info"><div class="metric-label">Aguardando Laudo</div><div class="metric-value">4</div><div class="metric-sub">Em análise</div></div>
+        <div class="metric warning"><div class="metric-label">Resultados Alterados</div><div class="metric-value">2</div><div class="metric-sub">Requerem atenção</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Últimos Exames</div>
+        <table class="med-table">
+          <thead><tr><th>Data</th><th>Paciente</th><th>Tipo</th><th>Resultado</th><th>Tendência</th><th>Laudo</th></tr></thead>
+          <tbody>
+            <tr><td>20/04</td><td><strong>Maria Luiza S.</strong></td><td>Hemograma</td><td><span class="pill green">Normal</span></td><td style="color:var(--uc-green)">↑ Melhorou</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Ver PDF</button></td></tr>
+            <tr><td>18/04</td><td><strong>José Almeida R.</strong></td><td>Glicemia</td><td><span class="pill red">Alterado</span></td><td style="color:var(--uc-red)">↑ 142 mg/dL</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Ver PDF</button></td></tr>
+            <tr><td>15/04</td><td><strong>Clara Meireles F.</strong></td><td>Densitometria</td><td><span class="pill yellow">Atenção</span></td><td style="color:var(--uc-yellow)">→ Estável</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Ver PDF</button></td></tr>
+            <tr><td>12/04</td><td><strong>Antônio Ribeiro</strong></td><td>Espirometria</td><td><span class="pill green">Normal</span></td><td style="color:var(--uc-green)">↑ Melhorou</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Ver PDF</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div class="card-title">Formas de Upload</div>
+        <div class="grid3">
+          <div style="background:var(--uc-surface);border:1px dashed var(--uc-border);border-radius:10px;padding:20px;text-align:center;cursor:pointer">
+            <div style="font-size:24px;margin-bottom:6px">📄</div>
+            <div style="font-size:12px;font-weight:500">Arquivo</div>
+            <div style="font-size:11px;color:var(--uc-muted)">PDF, imagem, DICOM</div>
+          </div>
+          <div style="background:var(--uc-surface);border:1px dashed var(--uc-border);border-radius:10px;padding:20px;text-align:center;cursor:pointer">
+            <div style="font-size:24px;margin-bottom:6px">📝</div>
+            <div style="font-size:12px;font-weight:500">Formulário</div>
+            <div style="font-size:11px;color:var(--uc-muted)">Digitar resultados</div>
+          </div>
+          <div style="background:var(--uc-surface);border:1px dashed var(--uc-border);border-radius:10px;padding:20px;text-align:center;cursor:pointer">
+            <div style="font-size:24px;margin-bottom:6px">📷</div>
+            <div style="font-size:12px;font-weight:500">Foto + OCR</div>
+            <div style="font-size:11px;color:var(--uc-muted)">Transcrição automática</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ USUÁRIOS ═══ -->
+    <div class="page" id="page-usuarios">
+      <div class="section-header"><div><div class="section-title">Gestão de Usuários</div><div class="section-sub">Todos os perfis do sistema</div></div><button class="btn">+ Novo Usuário</button></div>
+      <div class="metrics" style="grid-template-columns:repeat(5,1fr)">
+        <div class="metric"><div class="metric-label">Idosos</div><div class="metric-value" style="color:var(--uc-teal)">12</div></div>
+        <div class="metric"><div class="metric-label">Familiares</div><div class="metric-value" style="color:var(--uc-blue)">18</div></div>
+        <div class="metric"><div class="metric-label">Médicos</div><div class="metric-value" style="color:var(--uc-green)">4</div></div>
+        <div class="metric"><div class="metric-label">Back Office</div><div class="metric-value" style="color:var(--uc-yellow)">3</div></div>
+        <div class="metric"><div class="metric-label">Admin</div><div class="metric-value" style="color:var(--uc-red)">1</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Usuários Cadastrados</div>
+        <table class="med-table">
+          <thead><tr><th>Nome</th><th>Email</th><th>Perfil</th><th>Status</th><th>Último Acesso</th><th>Ações</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Fabricio C.</strong></td><td>fabricio@unificare.com</td><td><span class="pill red">Admin</span></td><td><span class="pill green">Ativo</span></td><td>Agora</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Editar</button></td></tr>
+            <tr><td><strong>Dr. Ricardo Mendes</strong></td><td>ricardo@clinica.com</td><td><span class="pill blue">Médico</span></td><td><span class="pill green">Ativo</span></td><td>Hoje 10:30</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Editar</button></td></tr>
+            <tr><td><strong>Ana Paula Santos</strong></td><td>ana.paula@email.com</td><td><span class="pill yellow">Família</span></td><td><span class="pill green">Ativo</span></td><td>Hoje 14:35</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Editar</button></td></tr>
+            <tr><td><strong>Maria Luiza S.</strong></td><td>—</td><td><span class="pill green">Idoso</span></td><td><span class="pill green">Ativo</span></td><td>Smartwatch</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Editar</button></td></tr>
+            <tr><td><strong>Carlos Operador</strong></td><td>carlos@unificare.com</td><td><span class="pill blue">Back Office</span></td><td><span class="pill green">Ativo</span></td><td>Hoje 13:00</td><td><button class="btn-ghost" style="padding:3px 8px;font-size:11px">Editar</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══ CONFIGURAÇÕES ═══ -->
+    <div class="page" id="page-config">
+      <div class="section-header"><div><div class="section-title">Configurações</div><div class="section-sub">Parâmetros do sistema UnifiCare</div></div></div>
+      <div class="grid2">
+        <div class="card">
+          <div class="card-title">Alertas e Limiares</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--uc-surface);border-radius:8px"><div><div style="font-size:12px;font-weight:500">SpO2 mínimo</div><div style="font-size:11px;color:var(--uc-muted)">Abaixo gera alerta crítico</div></div><div style="font-family:var(--fm);color:var(--uc-red);font-size:14px;font-weight:600">92%</div></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--uc-surface);border-radius:8px"><div><div style="font-size:12px;font-weight:500">FC máxima</div><div style="font-size:11px;color:var(--uc-muted)">Acima gera alerta</div></div><div style="font-family:var(--fm);color:var(--uc-red);font-size:14px;font-weight:600">100 bpm</div></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--uc-surface);border-radius:8px"><div><div style="font-size:12px;font-weight:500">Temperatura alerta</div><div style="font-size:11px;color:var(--uc-muted)">Acima gera aviso</div></div><div style="font-family:var(--fm);color:var(--uc-yellow);font-size:14px;font-weight:600">37.5°C</div></div>
+            <div style="display:flex;justify-content:space-between;align-items:center;padding:8px;background:var(--uc-surface);border-radius:8px"><div><div style="font-size:12px;font-weight:500">Check-in timeout</div><div style="font-size:11px;color:var(--uc-muted)">Janela antes de escalar</div></div><div style="font-family:var(--fm);color:var(--uc-blue);font-size:14px;font-weight:600">2h</div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Permissões por Perfil</div>
+          <table class="med-table">
+            <thead><tr><th>Módulo</th><th>Admin</th><th>BackOffice</th><th>Médico</th><th>Família</th></tr></thead>
+            <tbody>
+              <tr><td>Dashboard</td><td>✓</td><td>✓</td><td>—</td><td>—</td></tr>
+              <tr><td>Monitor.IA</td><td>✓</td><td>✓</td><td>—</td><td>—</td></tr>
+              <tr><td>Prontuário</td><td>✓</td><td>✓</td><td>✓</td><td>—</td></tr>
+              <tr><td>Medicamentos</td><td>✓</td><td>✓</td><td>✓</td><td>Leitura</td></tr>
+              <tr><td>Agendamentos</td><td>✓</td><td>✓</td><td>✓</td><td>Leitura</td></tr>
+              <tr><td>Exames</td><td>✓</td><td>✓</td><td>✓</td><td>Leitura</td></tr>
+              <tr><td>Usuários</td><td>✓</td><td>—</td><td>—</td><td>—</td></tr>
+              <tr><td>Configurações</td><td>✓</td><td>—</td><td>—</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ PAINEL ADMIN ═══ -->
+    <div class="page" id="page-admin">
+      <div class="section-header"><div><div class="section-title">Painel Admin Master</div><div class="section-sub">Visão executiva do sistema UnifiCare</div></div></div>
+      <div class="metrics" style="grid-template-columns:repeat(5,1fr)">
+        <div class="metric ok"><div class="metric-label">Idosos Ativos</div><div class="metric-value">12</div><div class="metric-sub"><span>↑ 2</span> este mês</div></div>
+        <div class="metric info"><div class="metric-label">Famílias</div><div class="metric-value">18</div><div class="metric-sub">Responsáveis</div></div>
+        <div class="metric"><div class="metric-label">Médicos</div><div class="metric-value" style="color:var(--uc-teal)">4</div><div class="metric-sub">Vinculados</div></div>
+        <div class="metric"><div class="metric-label">Back Office</div><div class="metric-value" style="color:var(--uc-blue)">3</div><div class="metric-sub">Operadores</div></div>
+        <div class="metric"><div class="metric-label">Receita Mensal</div><div class="metric-value" style="color:var(--uc-green)">R$ 13k</div><div class="metric-sub">MRR atual</div></div>
+      </div>
+
+      <div class="grid2">
+        <div class="card">
+          <div class="card-title">Indicadores de Saúde do Sistema</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>NPS Famílias (meta 70+)</span><span style="color:var(--uc-green);font-family:var(--fm)">74</span></div><div class="prog-bar"><div class="prog-fill" style="width:74%;background:var(--uc-green)"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Aderência medicamentos</span><span style="color:var(--uc-teal);font-family:var(--fm)">94%</span></div><div class="prog-bar"><div class="prog-fill" style="width:94%"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Check-ins sem anomalia</span><span style="color:var(--uc-green);font-family:var(--fm)">89%</span></div><div class="prog-bar"><div class="prog-fill" style="width:89%;background:var(--uc-green)"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Meta break-even (55 clientes)</span><span style="color:var(--uc-yellow);font-family:var(--fm)">12 / 55</span></div><div class="prog-bar"><div class="prog-fill" style="width:22%;background:var(--uc-yellow)"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:4px"><span>Tempo médio de resposta (alertas)</span><span style="color:var(--uc-teal);font-family:var(--fm)">3 min</span></div><div class="prog-bar"><div class="prog-fill" style="width:85%"></div></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Distribuição de Planos</div>
+          <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px">
+            <div style="display:flex;align-items:center;gap:10px"><div style="width:14px;height:14px;border-radius:4px;background:var(--uc-blue)"></div><div style="flex:1"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span>Premium</span><span style="font-family:var(--fm)">2</span></div><div class="prog-bar"><div class="prog-fill" style="width:17%;background:var(--uc-blue)"></div></div></div></div>
+            <div style="display:flex;align-items:center;gap:10px"><div style="width:14px;height:14px;border-radius:4px;background:var(--uc-teal)"></div><div style="flex:1"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span>Padrão</span><span style="font-family:var(--fm)">5</span></div><div class="prog-bar"><div class="prog-fill" style="width:42%"></div></div></div></div>
+            <div style="display:flex;align-items:center;gap:10px"><div style="width:14px;height:14px;border-radius:4px;background:var(--uc-yellow)"></div><div style="flex:1"><div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:3px"><span>Essencial</span><span style="font-family:var(--fm)">5</span></div><div class="prog-bar"><div class="prog-fill" style="width:42%;background:var(--uc-yellow)"></div></div></div></div>
+          </div>
+          <div class="separator"></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            <div style="background:var(--uc-surface);border-radius:8px;padding:10px;text-align:center"><div style="font-size:18px;font-weight:600;color:var(--uc-teal);font-family:var(--fm)">R$ 1.090</div><div style="font-size:11px;color:var(--uc-muted)">Ticket médio</div></div>
+            <div style="background:var(--uc-surface);border-radius:8px;padding:10px;text-align:center"><div style="font-size:18px;font-weight:600;color:var(--uc-green);font-family:var(--fm)">0%</div><div style="font-size:11px;color:var(--uc-muted)">Churn (mês)</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <div class="card-title">Log de Auditoria <span>últimas 24h</span></div>
+        <div class="alert-list">
+          <div class="alert-item info"><span class="alert-icon">👤</span><div class="alert-body"><p>Fabricio C. — Login no sistema</p><span>Admin Master · IP 192.168.1.10</span></div><span class="alert-time">18:30</span></div>
+          <div class="alert-item ok"><span class="alert-icon">✓</span><div class="alert-body"><p>Dr. Ricardo Mendes — Acessou prontuário Maria Luiza</p><span>Médico · Prontuário #ML-001</span></div><span class="alert-time">16:20</span></div>
+          <div class="alert-item"><span class="alert-icon">⚡</span><div class="alert-body"><p>Sistema — Alerta gerado: SpO2 91% Maria Luiza</p><span>Automático · Smartwatch</span></div><span class="alert-time">14:32</span></div>
+          <div class="alert-item ok"><span class="alert-icon">✓</span><div class="alert-body"><p>Carlos Operador — Resolveu alerta Maria Luiza</p><span>Back Office · Protocolo #URG-047</span></div><span class="alert-time">14:46</span></div>
+          <div class="alert-item info"><span class="alert-icon">📋</span><div class="alert-body"><p>Ana Paula Santos — Visualizou relatório diário</p><span>Família · Relatório 22/04/2026</span></div><span class="alert-time">14:35</span></div>
+          <div class="alert-item warn"><span class="alert-icon">△</span><div class="alert-body"><p>Sistema — 3 medicamentos atrasados detectados</p><span>Automático · Concil.IA</span></div><span class="alert-time">12:15</span></div>
+          <div class="alert-item ok"><span class="alert-icon">✓</span><div class="alert-body"><p>Fabricio C. — Cadastrou novo medicamento: Cálcio+VitD</p><span>Admin Master · Medicamentos</span></div><span class="alert-time">10:00</span></div>
+          <div class="alert-item info"><span class="alert-icon">👤</span><div class="alert-body"><p>Dra. Ana Costa — Login no sistema</p><span>Médico · IP 192.168.1.22</span></div><span class="alert-time">09:45</span></div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -761,6 +1035,23 @@
       banner.querySelector('p').textContent = 'SAMU 192 acionado pelo operador — Aguardando confirmação';
       banner.querySelector('.urgent-actions').innerHTML = '<span style="font-size:12px;color:var(--uc-red);font-weight:600">● SAMU acionado · ' + new Date().toLocaleTimeString('pt-BR', {hour:'2-digit',minute:'2-digit'}) + '</span>';
     }
+  }
+
+  function switchProfile(profile) {
+    const labels = {admin:'Admin Master',backoffice:'Back Office',medico:'Médico',familia:'Família'};
+    document.getElementById('profile-label').textContent = labels[profile]||profile;
+    const vis = {
+      admin:    ['dashboard','monitor','urgent','concilia','checkin','prontuario','medicamentos','agendamentos','exames','familia','relatorios','usuarios','config','admin'],
+      backoffice:['dashboard','monitor','urgent','concilia','checkin','prontuario','medicamentos','agendamentos','exames','familia','relatorios'],
+      medico:  ['prontuario','medicamentos','agendamentos','exames'],
+      familia: ['medicamentos','agendamentos','exames','relatorios']
+    };
+    const allowed = vis[profile]||vis.admin;
+    document.querySelectorAll('.nav-item').forEach(n => {
+      const id = n.id.replace('nav-','');
+      n.style.display = allowed.includes(id) ? '' : 'none';
+    });
+    navTo(allowed[0]);
   }
 
   function tick() {
