@@ -914,21 +914,21 @@
         </table>
       </div>
       <div class="card" style="margin-top:16px">
-        <div class="card-title">Formas de Upload</div>
+        <div class="card-title">Ações de Entrada</div>
         <div class="grid3">
-          <div style="background:var(--uc-surface);border:1px dashed var(--uc-border);border-radius:10px;padding:20px;text-align:center;cursor:pointer">
-            <div style="font-size:24px;margin-bottom:6px">📄</div>
-            <div style="font-size:12px;font-weight:500">Arquivo</div>
-            <div style="font-size:11px;color:var(--uc-muted)">PDF, imagem, DICOM</div>
+          <div class="op-card" onclick="openModal('upload-exam')" style="cursor:pointer;flex-direction:column;align-items:center;text-align:center;padding:20px">
+            <div style="font-size:24px;margin-bottom:10px;color:var(--uc-text)"><svg viewBox="0 0 24 24" style="width:32px;height:32px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><polyline points="9 15 12 12 15 15"></polyline></svg></div>
+            <div style="font-size:13px;font-weight:600">Importar Arquivo</div>
+            <div style="font-size:11px;color:var(--uc-muted)">PDF, DICOM ou Imagem</div>
           </div>
-          <div style="background:var(--uc-surface);border:1px dashed var(--uc-border);border-radius:10px;padding:20px;text-align:center;cursor:pointer">
-            <div style="font-size:24px;margin-bottom:6px">📝</div>
-            <div style="font-size:12px;font-weight:500">Formulário</div>
-            <div style="font-size:11px;color:var(--uc-muted)">Digitar resultados</div>
+          <div class="op-card" onclick="openModal('upload-form')" style="cursor:pointer;flex-direction:column;align-items:center;text-align:center;padding:20px">
+            <div style="font-size:24px;margin-bottom:10px;color:var(--uc-text)"><svg viewBox="0 0 24 24" style="width:32px;height:32px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></div>
+            <div style="font-size:13px;font-weight:600">Formulário Manual</div>
+            <div style="font-size:11px;color:var(--uc-muted)">Digitação de resultados</div>
           </div>
-          <div style="background:var(--uc-surface);border:1px dashed var(--uc-border);border-radius:10px;padding:20px;text-align:center;cursor:pointer">
-            <div style="font-size:24px;margin-bottom:6px">📷</div>
-            <div style="font-size:12px;font-weight:500">Foto + OCR</div>
+          <div class="op-card" onclick="openModal('upload-ocr')" style="cursor:pointer;flex-direction:column;align-items:center;text-align:center;padding:20px">
+            <div style="font-size:24px;margin-bottom:10px;color:var(--uc-text)"><svg viewBox="0 0 24 24" style="width:32px;height:32px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg></div>
+            <div style="font-size:13px;font-weight:600">Foto + IA (OCR)</div>
             <div style="font-size:11px;color:var(--uc-muted)">Transcrição automática</div>
           </div>
         </div>
@@ -1631,7 +1631,61 @@
   </div>
 </div>
 
-<!-- MODAL NOVO CONTRATO / FAMÍLIA -->
+<!-- MODAL UPLOAD FORMULÁRIO -->
+<div class="modal-overlay" id="modal-upload-form">
+  <div class="modal" style="max-width:550px">
+    <div class="modal-header">
+      <div class="modal-title">Digitar Resultados de Exame</div>
+      <button class="modal-close" onclick="closeModal('upload-form')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label class="form-label">Paciente</label>
+          <select class="form-control"><option>Maria Luiza Santos</option></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Hemoglobina (g/dL)</label>
+          <input type="number" class="form-control" placeholder="Ex: 13.5">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Leucócitos (/mm³)</label>
+          <input type="number" class="form-control" placeholder="Ex: 7500">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Glicemia (mg/dL)</label>
+          <input type="number" class="form-control" placeholder="Ex: 95">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Creatinina (mg/dL)</label>
+          <input type="number" class="form-control" placeholder="Ex: 0.9">
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('upload-form')">Cancelar</button>
+      <button class="btn" onclick="saveExam()" style="background:var(--uc-teal);color:#fff;border:none;padding:8px 20px">Salvar Resultados</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FOTO + OCR -->
+<div class="modal-overlay" id="modal-upload-ocr">
+  <div class="modal" style="max-width:450px">
+    <div class="modal-header">
+      <div class="modal-title">Capturar Exame (OCR)</div>
+      <button class="modal-close" onclick="closeModal('upload-ocr')">&times;</button>
+    </div>
+    <div class="modal-body" style="text-align:center">
+      <div style="width:100%;aspect-ratio:4/3;background:#000;border-radius:12px;margin-bottom:15px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden">
+        <div style="border:2px solid rgba(45,212,191,0.5);width:80%;height:60%;position:absolute"></div>
+        <span style="color:#fff;font-size:12px">Enquadre o laudo impresso na área central</span>
+      </div>
+      <div style="font-size:11px;color:var(--uc-muted);margin-bottom:15px">A IA irá transcrever os valores automaticamente.</div>
+      <button class="btn" style="width:100%;justify-content:center;height:45px" onclick="saveExam()">Capturar e Processar</button>
+    </div>
+  </div>
+</div>
 <div class="modal-overlay" id="modal-new-family">
   <div class="modal" style="max-width:550px">
     <div class="modal-header">
