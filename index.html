@@ -661,7 +661,7 @@
     <div class="page" id="page-checkin">
       <div class="section-header">
         <div><div class="section-title">Check-ins</div><div class="section-sub">IA Conversacional — Roteamento de anomalias para operador humano</div></div>
-        <button class="btn">Iniciar Manual</button>
+        <button class="btn" onclick="openModal('manual-checkin')">Iniciar Manual</button>
       </div>
       <div class="grid2">
         <div class="card">
@@ -1407,6 +1407,63 @@
   </div>
 </div>
 
+<!-- MODAL CHECK-IN MANUAL -->
+<div class="modal-overlay" id="modal-manual-checkin">
+  <div class="modal" style="max-width:450px">
+    <div class="modal-header">
+      <div class="modal-title">Iniciar Check-in Manual</div>
+      <button class="modal-close" onclick="closeModal('manual-checkin')">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Selecionar Paciente</label>
+        <select class="form-control">
+          <option>Maria Luiza Santos (Sem resposta)</option>
+          <option>José Almeida R. (Atrasado)</option>
+          <option>Antônio Ribeiro</option>
+          <option>Clara Meireles F.</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="margin-top:16px">
+        <label class="form-label">Canal de Comunicação</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <button class="btn-ghost active" style="padding:15px 5px;flex-direction:column;gap:5px;border-color:var(--uc-teal)">
+            <span style="font-size:20px">⌚</span>
+            <span style="font-size:11px">Voz (Watch)</span>
+          </button>
+          <button class="btn-ghost" style="padding:15px 5px;flex-direction:column;gap:5px">
+            <span style="font-size:20px">📱</span>
+            <span style="font-size:11px">Videochamada</span>
+          </button>
+          <button class="btn-ghost" style="padding:15px 5px;flex-direction:column;gap:5px">
+            <span style="font-size:20px">💬</span>
+            <span style="font-size:11px">Chat Família</span>
+          </button>
+          <button class="btn-ghost" style="padding:15px 5px;flex-direction:column;gap:5px">
+            <span style="font-size:20px">📞</span>
+            <span style="font-size:11px">Telefone Fixo</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-top:20px">
+        <label class="form-label">Motivo da Intervenção</label>
+        <select class="form-control">
+          <option>Falha na resposta automática (IA)</option>
+          <option>Monitoramento preventivo de rotina</option>
+          <option>Solicitação urgente do familiar</option>
+          <option>Anomalia em sinais vitais</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-ghost" onclick="closeModal('manual-checkin')">Cancelar</button>
+      <button class="btn" onclick="startManualSession()" style="background:var(--uc-teal);color:#fff;border:none;padding:8px 20px">Abrir Conexão</button>
+    </div>
+  </div>
+</div>
+
 <script>
   function navTo(page) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -1506,6 +1563,11 @@
   function saveRecipe() {
     alert('Receita importada e posologia configurada!');
     closeModal('import-recipe');
+  }
+
+  function startManualSession() {
+    alert('Conexão estabelecida. Abrindo interface de áudio/vídeo...');
+    closeModal('manual-checkin');
   }
 
   function tick() {
