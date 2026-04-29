@@ -1936,6 +1936,24 @@
     }
   }
 
+  function confirmResolveAlert() {
+    if(confirm('CONFIRMAR: O paciente Maria Luiza está realmente fora de perigo? Esta ação encerrará o protocolo de emergência.')) {
+      resolveAlert();
+    }
+  }
+
+  function confirmShowSamu() {
+    if(confirm('CUIDADO: Você está prestes a acionar o SAMU 192. Esta ação deve ser tomada apenas em casos de risco de vida confirmado. Confirmar?')) {
+      showSamu();
+    }
+  }
+
+  function confirmDelete(item) {
+    if(confirm('Tem certeza que deseja excluir este ' + item + '? Esta ação não poderá ser desfeita.')) {
+      alert('Exclusão realizada com sucesso (Simulação).');
+    }
+  }
+
   function switchProfile(profile) {
     const labels = {admin:'Admin Master',backoffice:'Back Office',medico:'Médico',familia:'Família'};
     document.getElementById('profile-label').textContent = labels[profile]||profile;
